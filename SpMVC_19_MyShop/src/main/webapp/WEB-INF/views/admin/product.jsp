@@ -8,10 +8,32 @@
 	color:red;
 	font-size:8px;
 }
+/*
+	col-md-7 col-12
+	해상도가 768보다 크면 7칸만 차지하고
+	그 이하이면 12칸을 차지하여 풀 width 로 보여라
+*/
+
+tr,td,th {
+	white-space: nowrap;
+
+}
+.pro-list {
+	overflow: auto;
+}
+
+.p_name {
+ 	display:inline-block;
+ 	width:150px;
+ 	padding: 0 5px;
+ 	overflow: hidden;
+ 	text-overflow: ellipsis;
+ 	white-space: nowrap;
+}
 
 </style>
-<article class="mt-5">
-	<article class="col-7 bg-light pro-input">
+<article class="mt-5 row">
+	<article class="col-md-7 col-12 bg-light pro-input">
 	
 		<form:form 
 			action="${rootPath}/admin/product/input" 
@@ -20,16 +42,16 @@
 			<div class="form-group">
 				<div class="container-fluid row">
 				<form:select path="p_bcode" class="custom-select-sm col-6">
-					<option>품목을 선택하세요</option>
-					<option>공산품</option>
-					<option>농산물</option>
-					<option>수산물</option>
+					<option value="0">품목을 선택하세요</option>
+					<option value="B0001">공산품</option>
+					<option value="B0002">농산물</option>
+					<option value="B0003">수산물</option>
 				</form:select>				
 				<form:select path="p_dcode" class="custom-select-sm col-6">
-					<option>거래처를 선택하세요</option>
-					<option>대덕물산</option>
-					<option>삼성농산</option>
-					<option>목포수산</option>
+					<option value="0">거래처를 선택하세요</option>
+					<option value="D0001">대덕물산</option>
+					<option value="D0002">삼성농산</option>
+					<option value="D0003">목포수산</option>
 				</form:select>	
 				</div>			
 			</div>
@@ -62,8 +84,8 @@
 		</form:form>
 	</article>
 	
-	<article class="col-4 bg-light pro-list">
-	
+	<article class="col-md-4 col-12 bg-light pro-list">
+		<%@ include file="/WEB-INF/views/admin/product_list.jsp" %>
 	</article>
 
 </article>

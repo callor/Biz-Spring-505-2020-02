@@ -66,7 +66,7 @@ public class ProductVO {
 	// 문자열의 길이가 맞지 않을 경우
 	// Size(mim, max)
 	// Min(), Max()
-	@Max(13)
+	// @Max(13)
 	@Size(max = 13,message = "* 상품코드는 13자리 이하만 가능합니다")
 	@Column(name="p_code",length = 13)
 	private String p_code;
