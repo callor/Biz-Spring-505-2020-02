@@ -29,6 +29,14 @@
 			</c:forEach>
 		</c:otherwise>
 	</c:choose>
+		<div>
+			<a href="/list?pageno=1&search=${search}&text=${text}">1</a>
+			<a href="/list?pageno=2&search=${search}&text=${text}">2</a>
+			<a href="/list?pageno=3&search=${search}&text=${text}">3</a>
+			<a href="/list?pageno=4&search=${search}&text=${text}">4</a>
+			<a href="/list?pageno=5&search=${search}&text=${text}">5</a>
+		</div>
+	
 </table>
 
 
