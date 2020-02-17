@@ -5,8 +5,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.SecondaryTable;
 import javax.persistence.Table;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -50,13 +53,16 @@ import lombok.ToString;
 @ToString
 @Builder
 
+//@SecondaryTable(name = "dept",
+//	pkJoinColumns = @PrimaryKeyJoinColumn(referencedColumnName = "p_dcode"))
 @Entity
 @Table(name="tbl_product",schema = "emsDB")
 public class ProductVO {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	long p_id;
+	@Column(name="p_id")
+	long id;
 	
 	// 입력값이 공백일 경우 error
 	@NotBlank(message = "* 상품코드는 공백이 될수 없습니다")
@@ -67,8 +73,11 @@ public class ProductVO {
 	// Size(mim, max)
 	// Min(), Max()
 	// @Max(13)
-	@Size(max = 13,message = "* 상품코드는 13자리 이하만 가능합니다")
-	@Column(name="p_code",length = 13)
+//	@Size(max = 13,message = "* 상품코드는 13자리 이하만 가능합니다")
+	@Column(name="p_code",
+		length = 13, // 길이는 13자리
+		unique = true, //  UNIQUE
+		nullable = false) // NOT NULL
 	private String p_code;
 
 	// @phoneNumber() : 전화번호 형식 062-111-1234
@@ -80,11 +89,18 @@ public class ProductVO {
 	@Column(name="p_name")
 	private String p_name;
 	
+	@Size(min=5, max=5,
+		message = "* 품목코드를 확인하세요")
 	@Column(name="p_bcode",length = 5)
 	private String p_bcode;
 	
-	@Column(name="p_dcode",length = 5)
-	private String p_dcode;
+//	@Size(min=5, max=5,
+//		message = "* 거래처코드를 확인하세요")
+//	@Column(name="p_dcode",length = 5,nullable = false)
+//	private String p_dcode;
+	
+//	@Column(name="d_name",table = "dept")
+//	private String d_name;
 
 	@Column(name="p_iprice")
 	private int p_iprice;
@@ -95,6 +111,10 @@ public class ProductVO {
 	@Column(name="p_detail")
 	@Type(type = "text")
 	private String p_detail;
+	
+	@ManyToOne
+	@JoinColumn(name="p_dcode")
+	DeptVO p_dcode;
 	
 }
 
