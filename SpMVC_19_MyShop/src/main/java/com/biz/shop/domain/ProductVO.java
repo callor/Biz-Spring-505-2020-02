@@ -94,14 +94,11 @@ public class ProductVO {
 	@Column(name="p_bcode",length = 5)
 	private String p_bcode;
 	
-//	@Size(min=5, max=5,
-//		message = "* 거래처코드를 확인하세요")
-//	@Column(name="p_dcode",length = 5,nullable = false)
-//	private String p_dcode;
+	@Size(min=5, max=5,
+		message = "* 거래처코드를 확인하세요")
+	@Column(name="p_dcode",length = 5,nullable = false)
+	private String p_dcode;
 	
-//	@Column(name="d_name",table = "dept")
-//	private String d_name;
-
 	@Column(name="p_iprice")
 	private int p_iprice;
 	
@@ -112,9 +109,6 @@ public class ProductVO {
 	@Type(type = "text")
 	private String p_detail;
 	
-	@ManyToOne
-	@JoinColumn(name="p_dcode")
-	DeptVO p_dcode;
 	
 }
 

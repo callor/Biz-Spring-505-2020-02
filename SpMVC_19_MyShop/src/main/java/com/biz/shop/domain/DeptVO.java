@@ -1,15 +1,19 @@
 package com.biz.shop.domain;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 /*
  * 거래처정보를 저장할 테이블 Entity설계
@@ -25,14 +29,20 @@ import javax.validation.constraints.Size;
  * 비고 d_rem
  */
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 @Entity(name = "dept")
 @Table(name="tbl_dept",schema = "emsDB")
 public class DeptVO {
 
 	@Id
-//	@Column(name="d_id")
-//	@GeneratedValue(strategy = GenerationType.IDENTITY)
-//	private long id;
+	@Column(name="d_id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private long id;
+	
 	@Column(length = 5,unique = true,nullable = false)
 	@Size(min=5, max=5)
 	@NotEmpty(message = "* 거래처코드는 반드시 입력하세요")
@@ -64,7 +74,5 @@ public class DeptVO {
 	
 	private String d_rem;
 	
-	@OneToMany(mappedBy = "p_dcode")
-	List<ProductVO> proList = new ArrayList<ProductVO>();
 	
 }
