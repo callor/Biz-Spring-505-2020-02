@@ -10,6 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.biz.shop.domain.DeptVO;
 import com.biz.shop.service.DeptService;
@@ -35,6 +36,14 @@ public class DeptController {
 	
 	}
 	
+	@RequestMapping(value="/list",method=RequestMethod.GET)
+	public String list(Model model) {
+		
+		this.modelMapping(model);
+		return "admin/dept_list";
+	
+	}
+	
 	@RequestMapping(value="/input",method=RequestMethod.POST)
 	public String input(
 			@Valid @ModelAttribute DeptVO deptVO,
@@ -51,6 +60,14 @@ public class DeptController {
 	
 	}
 	
+	
+	
+	@ResponseBody
+	@RequestMapping(value="/search",method=RequestMethod.GET)
+	public DeptVO search() {
+		return dService.search("D0001");
+		
+	}
 	private void modelMapping(Model model) {
 
 		List<DeptVO> deptList = dService.selectAll();

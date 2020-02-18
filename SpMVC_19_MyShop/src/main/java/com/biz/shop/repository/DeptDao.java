@@ -8,4 +8,8 @@ import com.biz.shop.domain.DeptVO;
 @Repository
 public interface DeptDao extends JpaRepository<DeptVO, Long>{
 
+	
+
+	  
+	
 }

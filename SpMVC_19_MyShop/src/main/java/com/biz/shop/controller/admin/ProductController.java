@@ -64,20 +64,16 @@ public class ProductController {
 	@RequestMapping(value="/detail",method=RequestMethod.POST)
 	public String product_detail(
 			@Valid @ModelAttribute("productVO") ProductVO productVO,
-			BindingResult result,
-			Model model
-			) {
+			BindingResult result, Model model) {
 
 		if(result.hasErrors()) {
 			this.modelMapping(model);
 			return "admin/main";
 		}
-		
 		this.modelMapping(model);
 		model.addAttribute("PRO_BODY","DETAIL");
 		return "admin/main";
 	}
-	
 	@RequestMapping(value="/input",method=RequestMethod.POST)
 	public String product(
 			@ModelAttribute("productVO") ProductVO productVO,

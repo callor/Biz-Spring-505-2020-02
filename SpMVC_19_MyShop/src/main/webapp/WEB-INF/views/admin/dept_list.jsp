@@ -1,16 +1,34 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ include file="/WEB-INF/views/include/include-head.jspf" %>
+<style>
+td,th {
+	white-space: nowrap;
+}
+</style>
 <script>
 $(function(){
 
-	$(".pro_tr").click(function(){
+	$(".dept_tr").click(function(){
 		
-		let id = $(this).data("id") // attr("data-id")
-		let c = $(this).attr("class")
+		// let id = $(this).data("id") // attr("data-id")
+		// let c = $(this).attr("class")
 
+		let tds = $(this).children();
+		let d_code = tds.eq(0).text();
+		let d_name = tds.eq(1).text();
+		
+		// 나를 open한 화면에 있는 #p_dcode input 박스에
+		// d_code 값을 채워 넣어라
+		$("#p_dcode",opener.document).val(d_code)
+		$("#d_name",opener.document).text(d_name)
+		
+		window.close() // 일반 브라우저
+		window.open('about:blank','_self').self.close() // IE 창닫기
+		
 		// document.location.href="${rootPath}/admin/product/update?id=" + id
-		document.location.href="${rootPath}/admin/product/update/" + id
+		// document.location.href="${rootPath}/admin/product/update/" + id
 		
 	})
 	
@@ -47,14 +65,7 @@ $(function(){
 			</c:forEach>
 		</c:otherwise>
 	</c:choose>
-		<div>
-			<a href="/list?pageno=1&search=${search}&text=${text}">1</a>
-			<a href="/list?pageno=2&search=${search}&text=${text}">2</a>
-			<a href="/list?pageno=3&search=${search}&text=${text}">3</a>
-			<a href="/list?pageno=4&search=${search}&text=${text}">4</a>
-			<a href="/list?pageno=5&search=${search}&text=${text}">5</a>
-		</div>
-	
+
 </table>
 
 

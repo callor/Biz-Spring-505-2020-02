@@ -7,6 +7,36 @@
 <html>
 <head>
 <%@ include file="/WEB-INF/views/include/include-head.jspf"%>
+<style>
+.in-errors {
+	color:red;
+	font-size:8px;
+}
+/*
+	col-md-7 col-12
+	해상도가 768보다 크면 7칸만 차지하고
+	그 이하이면 12칸을 차지하여 풀 width 로 보여라
+*/
+
+tr,td,th {
+	white-space: nowrap;
+
+}
+.list-body {
+	overflow: auto;
+}
+
+.p_name {
+ 	display:inline-block;
+ 	width:150px;
+ 	padding: 0 5px;
+ 	overflow: hidden;
+ 	text-overflow: ellipsis;
+ 	white-space: nowrap;
+}
+
+</style>
+
 </head>
 <body class="container-xl">
 	<header>

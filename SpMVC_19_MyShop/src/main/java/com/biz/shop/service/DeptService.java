@@ -24,7 +24,14 @@ public class DeptService {
 
 	public DeptVO save(DeptVO deptVO) {
 		DeptVO ret = deptDao.save(deptVO);
+		
 		return ret;
+	}
+
+	public DeptVO search(String d_code) {
+
+		// return deptDao.findByD_Code(d_code);
+		return null;
 	}
 	
 }

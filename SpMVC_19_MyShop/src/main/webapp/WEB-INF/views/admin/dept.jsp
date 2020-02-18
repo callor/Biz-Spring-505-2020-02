@@ -32,6 +32,13 @@ tr,td,th {
 }
 
 </style>
+<script>
+	$(function() {
+		$("#d_code").keydown(function(e){
+			alert(e.keyCode)
+		})
+	})
+</script>
 <article class="mt-5 row">
 	<article class="col-md-7 col-12 bg-light pro-input">
 	
@@ -90,7 +97,7 @@ tr,td,th {
 		</form:form>
 	</article>
 	
-	<article class="col-md-4 col-12 bg-light dept-list">
+	<article class="col-md-4 col-12 bg-light list-body">
 		<%@ include file="/WEB-INF/views/admin/dept_list.jsp" %>
 	</article>
 
