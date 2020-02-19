@@ -61,10 +61,14 @@ public class DeptController {
 	
 	}
 
-	@RequestMapping(value="/search/{search}",
+	@RequestMapping(value= {"/search/{search}",
+							"/search/",
+							"/search"},
 				method=RequestMethod.GET)
 	public String search(
-			@PathVariable("search") String search,
+			@PathVariable(
+					name = "search",
+					required = false) String search,
 			Model model) {
 		
 		this.modelMapping(model,search);

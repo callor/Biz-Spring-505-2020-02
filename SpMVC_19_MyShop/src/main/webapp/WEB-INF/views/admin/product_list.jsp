@@ -1,6 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
+<%@ include 
+	file="/WEB-INF/views/include/context-menu.jsp" %>
+
 <script>
 $(function(){
 
@@ -18,14 +22,39 @@ $(function(){
 		tr tag가 클릭되면 id 값을 추출하고
 		update method로 전달하기
 	*/
-	$(".pro_tr").click(function(){
-		let id = $(this).data("id") // attr("data-id")
+	$(".pro_tr_1").click(function(){
+		let id = $(this).attr("data-id") // attr("data-id")
 		let c = $(this).attr("class")
 		// document.location.href="${rootPath}/admin/product/update?id=" + id
 		document.location.href="${rootPath}/admin/product/update/" + id
 	})
 	
-	$.contextMenu("html5")
+	var pro_call_func = function(key) {
+		var id = $(this).data("id")
+		if(key == "edit") {
+			document
+				.location
+				.href
+			="${rootPath}/admin/product/update/" + id				
+		} else if (key == "delete") {
+			if(confirm("정말 삭제합니다!!!")) {
+				document
+				.location
+				.href
+				="${rootPath}/admin/product/delete/" + id				
+			}
+		}
+	}
+	
+	// $.contextMenu("html5")
+	$.contextMenu({
+		selector:".pro_tr",
+		items : {
+			"edit" : {name:"상품 수정",icon:"edit"},
+			"delete" : {name:"상품 삭제",icon:"delete"}
+		},
+		callback : pro_call_func
+	})
 	
 })
 
@@ -48,7 +77,6 @@ $(function(){
 		<c:otherwise>
 			<c:forEach var="PRO" items="${PRO_LIST}" varStatus="i">
 			<tr class="pro_tr context-menu-one btn btn-naetral" 
-					contextmenu="pro_context"
 					data-id="${PRO.id}">
 				<td data-id="${PRO.p_name}">${PRO.p_code}</td>
 				<td><span class="p_name">${PRO.p_name}</span></td>
@@ -60,13 +88,7 @@ $(function(){
 			</c:forEach>
 		</c:otherwise>
 	</c:choose>
-		<div>
-			<a href="/list?pageno=1&search=${search}&text=${text}">1</a>
-			<a href="/list?pageno=2&search=${search}&text=${text}">2</a>
-			<a href="/list?pageno=3&search=${search}&text=${text}">3</a>
-			<a href="/list?pageno=4&search=${search}&text=${text}">4</a>
-			<a href="/list?pageno=5&search=${search}&text=${text}">5</a>
-		</div>
+
 	
 </table>
 

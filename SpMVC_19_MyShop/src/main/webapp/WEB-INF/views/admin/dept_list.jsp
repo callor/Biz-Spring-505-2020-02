@@ -32,6 +32,33 @@ $(function(){
 		
 	})
 	
+	var dept_call = function(key) {
+		var id = $(this).data("id")
+		if(key == "edit") {
+			document
+				.location
+				.href
+			="${rootPath}/admin/dept/update/" + id				
+		} else if (key == "delete") {
+			if(confirm("정말 삭제합니다!!!")) {
+				document
+				.location
+				.href
+				="${rootPath}/admin/dept/delete/" + id				
+			}
+		}
+	}
+	$.contextMenu({
+		selector:".dept_tr",
+		items : {
+			"edit" : {name:"거래처 수정",icon:"edit"},
+			"delete" : {name:"거래처 삭제",icon:"delete"}
+		},
+		callback : dept_call
+	})
+	
+	
+	
 })
 
 </script>
