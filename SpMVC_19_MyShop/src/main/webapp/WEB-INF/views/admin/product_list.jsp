@@ -19,20 +19,15 @@ $(function(){
 		update method로 전달하기
 	*/
 	$(".pro_tr").click(function(){
-		
 		let id = $(this).data("id") // attr("data-id")
 		let c = $(this).attr("class")
-
 		// document.location.href="${rootPath}/admin/product/update?id=" + id
 		document.location.href="${rootPath}/admin/product/update/" + id
-		
-		
-		
-		
 	})
 	
+	$.contextMenu("html5")
+	
 })
-
 
 </script>
 <table class="col-md-4 col-12">
@@ -52,7 +47,9 @@ $(function(){
 		</c:when>
 		<c:otherwise>
 			<c:forEach var="PRO" items="${PRO_LIST}" varStatus="i">
-			<tr class="pro_tr" data-id="${PRO.id}">
+			<tr class="pro_tr context-menu-one btn btn-naetral" 
+					contextmenu="pro_context"
+					data-id="${PRO.id}">
 				<td data-id="${PRO.p_name}">${PRO.p_code}</td>
 				<td><span class="p_name">${PRO.p_name}</span></td>
 				<td>${PRO.p_bcode}</td>

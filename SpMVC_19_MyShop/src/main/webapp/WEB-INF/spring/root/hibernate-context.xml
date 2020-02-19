@@ -43,6 +43,6 @@
 			</props>
 		</property>
 	</bean>
-	<jpa:repositories base-package="com.biz.shop.repository"/>
+	<jpa:repositories base-package="com.biz.shop.persistance"/>
 
 </beans>
