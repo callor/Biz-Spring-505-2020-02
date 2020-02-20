@@ -10,6 +10,7 @@
 
 <!-- security 설정 -->
 <!-- admin 사용자를 임시로 등록하여 login 테스트 -->
+<!-- 
 <security:authentication-manager>
 	<security:authentication-provider>
 		<security:user-service>
@@ -22,7 +23,7 @@
 		</security:user-service>
 	</security:authentication-provider>
 </security:authentication-manager>
-
+ -->
 <bean id="passwordEncoder" 
 		class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
 		<constructor-arg index="0" value="4" />
@@ -63,12 +64,11 @@ data-source-ref="emsHiber"
 	</security:authentication-provider>
 </security:authentication-manager>
 
-
 <bean class="com.biz.shop.provider.CustomAuthProvider" 
 		id="customAuth"/>
 <security:authentication-manager>
 	<security:authentication-provider ref="customAuth"/>
-</security:authentication-manager>		
+</security:authentication-manager>
 
 
 <!-- 

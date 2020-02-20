@@ -25,7 +25,7 @@
 
 
 	<logger name="com.biz.shop.controller" 
-				level="WARN"
+				level="INFO"
 				additivity="false">
 		<appender-ref ref="STD_OUT"/>	
 	</logger>
@@ -34,6 +34,13 @@
 				additivity="false">
 		<appender-ref ref="myOUT"/>	
 	</logger>
+	<logger name="com.biz.shop.provider" 
+				level="TRACE"
+				additivity="false">
+		<appender-ref ref="myOUT"/>	
+	</logger>
+	
+	
 	<logger name="com.biz.shop.service" 
 				level="DEBUG"
 				additivity="false">
