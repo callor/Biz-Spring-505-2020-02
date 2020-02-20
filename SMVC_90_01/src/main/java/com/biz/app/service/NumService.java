@@ -1,6 +1,8 @@
-package com.biz.app;
+package com.biz.app.service;
 
 import org.springframework.stereotype.Service;
+
+import com.biz.app.ScoreVO;
 
 /*
  * Service 클래스
@@ -31,6 +33,38 @@ public class NumService {
 			}
 		}
 		return sum;
+	}
+
+	public int sum(int kor, int eng, int math, int sci, int music) {
+		
+		int sum = kor;
+		sum += eng;
+		sum += math;
+		sum += sci;
+		sum += music;
+		return sum;
+	}
+
+	public int avg(int kor, int eng, int math, int sci, int music) {
+		int sum = kor;
+		sum += eng;
+		sum += math;
+		sum += sci;
+		sum += music;
+		return sum/5;
+	}
+
+	public void score(ScoreVO scoreVO) {
+
+		int sum = scoreVO.getKor();
+		sum += scoreVO.getEng();
+		sum += scoreVO.getMath();
+		sum += scoreVO.getSci();
+		sum += scoreVO.getMusic();
+		
+		scoreVO.setSum(sum);
+		scoreVO.setAvg(sum / 5);
+		
 	}
 	
 }
