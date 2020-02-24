@@ -37,41 +37,39 @@
 
 	<!-- Page Features -->
 	<div class="row text-center">
-		<c:forEach var="B2C" items="${B2C_LIST}" varStatus="i">
-			<div class="col-lg-3 col-md-6 mb-4">
-				<div class="card h-100">
-					<img class="card-img-top" src="http://placehold.it/500x325" alt="">
-					<div class="card-body">
-						<h4 class="card-title">Card title</h4>
-						<div>
-							<c:choose>
-								<c:when test="${empty B2C_LIST}">
-									<tr>
-										<td colspan="6">상품 정보가 없습니다.</td>
-									</tr>
-								</c:when>
-								<c:otherwise>
-
-									<div class="B2C_LIST">
-										<div>상품이름 : ${B2C.p_name}</div>
-										<div>상품가격 : ${B2C.p_iprice}</div>
-									</div>
-
-								</c:otherwise>
-							</c:choose>
-						</div>
-					</div>
-					<div class="card-footer">
-						<a href="${rootPath}/user/product/detail/${B2C.id}"
-							class="btn basket btn-primary">보러만 가기</a>
-					</div>
+		<c:choose>
+			<c:when test="${empty B2C_LIST}">
+				<div>
+					<p>상품 정보가 없습니다.</p>
 				</div>
-			</div>
-		</c:forEach>
-
+			</c:when>
+			<c:otherwise>
+			
+			<c:forEach var="B2C" items="${B2C_LIST}" varStatus="i">
+			<article class="col-lg-3 col-md-6 mb-4">
+				<div class="card h-100">
+					<img class="card-img-top" 
+						src="http://placehold.it/500x325" alt="상품이미지">
+					<article class="card-body">
+						<h4 class="card-title">${B2C.p_name}</h4>
+						<div class="B2C_LIST">
+							<p>상품가격 : ${B2C.p_oprice}</p>
+						</div>
+					</article>
+					<article class="card-footer">
+						<a href="${rootPath}/user/product/detail/${B2C.id}"
+						class="btn basket btn-primary">자세히 보기</a>
+					</article>
+				</div>
+			</article>
+			</c:forEach>
+			
+			</c:otherwise>
+		</c:choose>
 	</div>
-	<!-- /.row -->
-
 </div>
+<!-- /.row -->
+
+
 <!-- /.container -->
 
