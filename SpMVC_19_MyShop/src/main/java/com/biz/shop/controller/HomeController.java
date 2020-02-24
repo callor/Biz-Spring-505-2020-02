@@ -17,7 +17,7 @@ public class HomeController {
 	public String home(Locale locale, Model model) {
 		
 		log.debug("홈컨트롤러");
-		return "redirect:/user";
+		return "redirect:/user/product/list";
 	
 	}
 	
