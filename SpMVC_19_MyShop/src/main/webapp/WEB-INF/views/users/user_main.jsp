@@ -64,7 +64,9 @@ $(function(){
 						</form>
 
 					</sec:authorize>
-					
+					<li class="nav-item">
+							<a class="nav-link" 
+								href="${rootPath}/user/product/cart_view">장바구니</a></li> 
 					
 					<sec:authorize access="hasRole('ADMIN')">
 						<li class="nav-item">
@@ -83,6 +85,11 @@ $(function(){
 			<c:when test="${BODY == 'DETAIL'}">
 				<%@ include file="/WEB-INF/views/users/user_product_detail.jsp" %>
 			</c:when>
+
+			<c:when test="${BODY == 'CART_VIEW'}">
+				<%@ include file="/WEB-INF/views/users/cart_view.jsp" %>
+			</c:when>
+
 			<c:otherwise>
 				<%@ include file="/WEB-INF/views/users/user_product_list.jsp" %>
 			</c:otherwise>

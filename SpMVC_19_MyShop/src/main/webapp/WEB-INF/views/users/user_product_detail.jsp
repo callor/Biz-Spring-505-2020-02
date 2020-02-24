@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <style>
 body {
 	height: 100%;
@@ -40,6 +41,51 @@ p{
 	white-space: pre-line;
 }
 </style>
+<script>
+	$(function(){
+		$("#btn-cart").click(function(){
+			
+			let p_qty = parseInt($("#p_qty").val())
+			if(p_qty <= 0) {
+				alert("수량은 0개 이상이어야 합니다")
+				return false;
+			}
+			
+			$.ajax({
+				url : "${rootPath}/user/product/cart",
+				type :"POST",
+				data : {
+					p_code : "${pVO.p_code}",
+					p_oprice : "${pVO.p_oprice}",
+					p_qty : p_qty,
+					"${_csrf.parameterName}" : "${_csrf.token}"
+				},
+				success:function(result) {
+					if(result == 'LOGIN_FAIL') {
+						alert("먼저 로그인을 수행해야 합니다")
+						
+					} else if (result == "OK") {
+						if(confirm("상품을 카트에 담았습니다.\n" +
+								"장바구니로 이동할까요?")) {
+							document.location.href="${rootPath}/user/product/cart_view"
+						}
+					}
+				},
+				error:function() {
+					alert("서버 통신 오류")
+				}
+			})
+			
+			// document.location.href = "${rootPath}/user/product/cart"
+			//							+ "?p_code=${pVO.p_code}"
+			//							+ "&p_oprice=${pVO.p_oprice}"
+			//							+ "&p_qty=" + p_qty
+		})
+	})
+
+</script>
+
+
 <body>
 	<div class="product-container-box">
 
@@ -56,7 +102,10 @@ p{
 				<tbody>
 					<tr>
 						<th>판매가</th>
-						<td>${pVO.p_oprice}원</td>
+						<td><fmt:formatNumber 
+									value="${pVO.p_oprice}" 
+									type="currency" 
+									currencySymbol="￦" />원</td>
 					</tr>
 					<tr>
 						<th>상품코드</th>
@@ -68,15 +117,14 @@ p{
 					</tr>
 					<tr>
 						<th>구매수량</th>
-						<td><input type="number"> <a href="#a">증가</a> <a
-							href="#a">감소</a></td>
+						<td><input type="number" id="p_qty" name="p_qty" value="0"></td>
 					</tr>
 				</tbody>
 			</table>
 			<hr/>
 			<div class="btn-box">
-				<button class="btn btn-primary" id="p-button">장바구니</button>
-				<button class="btn btn-primary" id="p-button">바로구매</button>
+				<button class="btn btn-primary" id="btn-cart">장바구니</button>
+				<button class="btn btn-primary" id="btn-buy">바로구매</button>
 			</div>
 		</div>
 	</div>

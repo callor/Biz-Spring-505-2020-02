@@ -1,22 +1,21 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <c:set var="rootPath" value="${pageContext.request.contextPath}" />
 <script>
 	$(function() {
 
-		$(".search")
-				.keypress(
-						function(key) {
+		$(".search").keypress(function(key) {
 							if (key.keyCode == 13) {
-								let a = $(this).val()
+								let search = $(this).val()
 
-								if ($.trim(a) == "") {
+								if ($.trim(search) == "") {
 									alert("문자를 입력하세요")
 									return false;
 								}
 
-								alert("입력한 검색어는 : " + a)
+								alert("입력한 검색어는 : " + search)
 								document.location.href = "${rootPath}/user/product/search?search="
 										+ a
 							}
@@ -53,7 +52,9 @@
 					<article class="card-body">
 						<h4 class="card-title">${B2C.p_name}</h4>
 						<div class="B2C_LIST">
-							<p>상품가격 : ${B2C.p_oprice}</p>
+							<p><fmt:formatNumber value="${B2C.p_oprice}" 
+										type="currency" 
+										currencySymbol="￦"/></p>
 						</div>
 					</article>
 					<article class="card-footer">

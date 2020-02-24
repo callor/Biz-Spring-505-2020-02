@@ -31,6 +31,7 @@ public class CustomAuthProvider implements AuthenticationProvider {
 		String username = (String) authentication.getPrincipal(); // username 추출
 		String password = (String) authentication.getCredentials(); // 비밀번호 추출
 		log.debug("USERNAME : {}",username);
+		
 		if (username == null || username.isEmpty()) {
 			log.debug("LOGIN FAIL");
 			return null;
