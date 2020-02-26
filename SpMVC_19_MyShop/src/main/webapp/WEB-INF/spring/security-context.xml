@@ -106,7 +106,7 @@ hasRole('역할') 과 같은 표현식을 사용할수 있도록 선언
 			login-processing-url="/login"
 			authentication-failure-url="/auth/login?error"
 			
-			default-target-url="/auth/login_ok"
+			default-target-url="/"
 			username-parameter="username"
 			password-parameter="password" 
 			/>
