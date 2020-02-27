@@ -23,7 +23,17 @@
 		콘솔에 보이지 않는다.
 	 -->
 
-	<root level="INFO">
+	<logger name="com.biz.bbs.dao" additivity="false"> 
+		<level value="INFO"/> 
+		<appender-ref ref="myConsole"/> 
+	</logger>
+
+	<logger name="com.biz.bbs.service" additivity="false"> 
+		<level value="INFO"/> 
+		<appender-ref ref="myConsole"/> 
+	</logger>
+
+	<root level="DEBUG">
 		<appender-ref ref="myConsole"/>
 	</root>
 

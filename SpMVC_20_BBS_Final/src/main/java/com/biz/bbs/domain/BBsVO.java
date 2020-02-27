@@ -2,6 +2,18 @@ package com.biz.bbs.domain;
 
 import org.apache.ibatis.type.Alias;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 /*
  * VO(Value Object) = DTO(Data Transfer Object) 클래스
  * 메서드와 메서드간에
@@ -53,8 +65,5 @@ public class BBsVO {
 	private String b_subject;	//nVARCHAR2(125)
 	private String b_content;	//nVARCHAR2(2000)
 	private String b_file;		//nVARCHAR2(125)
-
-
-	
 
 }

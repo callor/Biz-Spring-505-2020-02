@@ -24,6 +24,15 @@
 				value="/WEB-INF/spring/mybatis/mapper/*-mapper.xml"/>
 		<property name="typeAliasesPackage" 
 				value="com.biz.bbs.domain"/>
+		<property name="configuration">
+			<bean class="org.apache.ibatis.session.Configuration">
+				<property name="cacheEnabled" value="true" />
+				<property name="defaultExecutorType" value="REUSE" />
+				<property name="jdbcTypeForNull" value="VARCHAR" />
+				<property name="mapUnderscoreToCamelCase" value="false" />
+				<property name="logPrefix" value="마이바티스 : " />
+			</bean>
+		</property>		
 	</bean>
 	<!-- transaction 자동화 설정 -->
 	<tx:annotation-driven/>
