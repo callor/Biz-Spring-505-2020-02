@@ -73,4 +73,16 @@ public class CommentController {
 		return "redirect:/comment/list";
 	
 	}
+	
+	@RequestMapping(value="/delete",method=RequestMethod.POST)
+	public String delete(String c_id,String b_id,Model model) {
+		
+		int ret = cmtService.delete(Long.valueOf(c_id));
+		
+		model.addAttribute("b_id",b_id);
+		return "redirect:/comment/list";
+	
+	}
+	
+	
 }

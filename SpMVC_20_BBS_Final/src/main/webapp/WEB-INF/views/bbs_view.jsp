@@ -12,17 +12,38 @@
 		// $(".cmt-item").click(function(){
 		$(document).on("click",".cmt-item",function() {
 			let id = $(this).data("id")
-			alert(id)
+			alert("cmt-item: " + id)
 		})
 		
-		$(document).on("click",".cmt-item-del",function(event){
+		$(document).on("click","div.cmt-item-del",
+				function(event){
+			
+			// 나를 감싸고 있는 곳으로 
+			// 이벤트가 전파되는 것을
+			// 그만두어라
 			event.stopPropagation()
-			// $(this).closest("div")
+			if(!confirm("코멘트를 삭제할까요?")) {
+				return false
+			}
+			
+			// $(this).parent("div")
 			// 현재 자신을 감싸고 있는 
 			// 가장 가까운 div을 찾아라
-			let c_id = $(this).closest("div").data("id")
-			alert(c_id)
-		
+			let c_id = $(this).parent("div").data("id")
+			$.ajax({
+				url : "${rootPath}/comment/delete/",
+				data : {
+					c_id : c_id,
+					b_id : "${BBS.b_id}"
+				},
+				type : "POST",
+				success:function(result) {
+					$("div.cmt-list").html(result)					
+				},
+				error:function(){
+					alert("서버 통신 오류")
+				}
+			})
 		})
 		
 		$("button").click(function(){
@@ -67,6 +88,12 @@
 	})
 	</script>
 </head>
+<style>
+ .cmt-item-del {
+ 	cursor: pointer;
+ }		
+
+</style>
 <body>
 	<%@ include file="/WEB-INF/views/include/include-header.jspf" %>
 	<section class="container-fluid">
