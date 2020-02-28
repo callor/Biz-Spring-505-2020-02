@@ -9,6 +9,22 @@
 	<script>
 	$(function(){
 		
+		// $(".cmt-item").click(function(){
+		$(document).on("click",".cmt-item",function() {
+			let id = $(this).data("id")
+			alert(id)
+		})
+		
+		$(document).on("click",".cmt-item-del",function(event){
+			event.stopPropagation()
+			// $(this).closest("div")
+			// 현재 자신을 감싸고 있는 
+			// 가장 가까운 div을 찾아라
+			let c_id = $(this).closest("div").data("id")
+			alert(c_id)
+		
+		})
+		
 		$("button").click(function(){
 			let txt = $(this).text()
 			if(txt == '수정') {
@@ -18,7 +34,29 @@
 					document.location.replace("${rootPath}/delete/${BBS.b_id}")    
 				}
 			} else if(txt == '저장') {
-				return false
+				
+				/*
+				ajax를 사용해서 form 담긴 데이터를 controller 전송
+				*/
+				
+				var formData = $("form").serialize()
+				// alert(formData)
+				$.ajax({
+					
+					url : "${rootPath}/comment/insert",
+					data : formData,
+					type : "POST",
+					success:function(result) {
+						$("div.cmt-list").html(result)
+					},
+					error:function(){
+						alert("서버와 통신오류")
+					}
+				})
+				
+				
+				
+				return true
 			} else {
 				document.location.href="${rootPath}/list"
 			}
@@ -52,28 +90,28 @@
 		<div class="p-2">
 			<b>댓글을 남겨주세요</b>
 		</div>
-		<div class="row p-4 bg-light">
-			<div class="col-2">
-				<input class="form-control" placeholder="작성자">
+		<form method="POST" action="${rootPath}/comment/insert">
+			<div class="row p-4 bg-light">
+				<input type="hidden" name="c_b_id" value="${BBS.b_id}">
+				<div class="col-2">
+					<input name="c_writer" 
+						class="form-control" placeholder="작성자">
+				</div>
+				<div class="col-8">			
+					<input name="c_subject"
+						class="form-control" placeholder="댓글을 입력하세요">
+				</div>
+				<div class="col-2  d-flex justify-content-center">
+					<button type="button" class="btn btn-success">저장</button>
+				</div>
 			</div>
-			<div class="col-8">			
-				<input class="form-control" placeholder="댓글을 입력하세요">
-			</div>
-			<div class="col-2  d-flex justify-content-center">
-				<button class="btn btn-success">저장</button>
-			</div>
-		</div>
-
+		</form>
 		<div class="p-2">
 			<b>댓글 리스트</b>
 		</div>
-	
-		<div class="row p-4 bg-light ">
-			<div class="col-2"><b>홍길동</b></div>
-			<div class="col-10">댓글달기</div>
+		<div class="p-4 cmt-list">
+			<%@ include file="/WEB-INF/views/comment_list.jsp" %>
 		</div>
 	</section>
-
-
 </body>
 </html>

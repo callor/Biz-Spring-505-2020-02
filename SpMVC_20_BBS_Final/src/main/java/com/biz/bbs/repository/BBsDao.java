@@ -1,4 +1,4 @@
-package com.biz.bbs.dao;
+package com.biz.bbs.repository;
 
 import java.util.List;
 
