@@ -168,6 +168,35 @@ public class BBsController {
 		return null;
 	}
 	
+	@RequestMapping(value="/repl",method=RequestMethod.GET)
+	public String repl(
+			@RequestParam("b_id") String b_id,
+			Model model) {
+		
+		// 본글과 답글을 연결하기 위해서
+		// 답글의 b_p_id에 본글의 id값을 저장
+		BBsVO bbsVO 
+			= bbsService.findById(Long.valueOf(b_id));
+		
+		String b_subject = "re : " + bbsVO.getB_subject();
+		bbsVO.setB_subject(b_subject);
+		bbsVO.setB_content("");
+		bbsVO.setB_writer("");
+		
+		model.addAttribute("BBS",bbsVO);
+		return "bbs_write";
+	}
+	
+	@RequestMapping(value="/repl",method=RequestMethod.POST)
+	public String repl(BBsVO bbsVO,Model model) {
+
+		bbsVO.setB_p_id(bbsVO.getB_id());
+		bbsVO.setB_id(0L);
+		int ret = bbsService.insert(bbsVO);
+		return "redirect:/list";
+	
+	}
+	
 	@ResponseBody
 	@RequestMapping(value="/image_up",
 				method=RequestMethod.POST,

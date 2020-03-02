@@ -57,9 +57,23 @@
 			} else if(txt == '저장') {
 				
 				/*
-				ajax를 사용해서 form 담긴 데이터를 controller 전송
+				ajax를 사용해서 form 담긴 데이터를 
+				controller 전송
+				.serialize() 함수를 사용해서 
+					form에 담긴 데이터를
+					문자열화하고, query형식으로 변경하고
+					ajax의 data에 담아서 전송
 				*/
 				
+				// input box에 입력한 데이터를
+				// json 형태로 변경하기
+				// 항목이 많을 경우 문제를 일으킬수 있다
+				var aData = {
+					c_writer : $("#c_writer").val(),
+					c_subject :	$("#c_subject").val()
+				}
+				
+				// serialize()를 사용하면 모든 문제 해결
 				var formData = $("form").serialize()
 				// alert(formData)
 				$.ajax({
@@ -78,6 +92,14 @@
 				
 				
 				return true
+			
+			} else if(txt == "답글"){
+				// alert("답글쓰기")
+				document.location.href = "${rootPath}/repl?b_id=${BBS.b_id}"
+				
+				
+				return false
+			
 			} else {
 				document.location.href="${rootPath}/list"
 			}
@@ -110,6 +132,7 @@
 	<div class="form-group d-flex justify-content-end">
 		<button class="btn btn-primary mr-3">수정</button>
 		<button class="btn btn-danger mr-3">삭제</button>
+		<button class="btn btn-info mr-3">답글</button>
 		<button class="btn btn-success">목록으로</button>
 	</div>
 	<hr/>

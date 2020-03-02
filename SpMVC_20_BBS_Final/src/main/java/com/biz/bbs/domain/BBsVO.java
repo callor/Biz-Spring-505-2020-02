@@ -3,6 +3,7 @@ package com.biz.bbs.domain;
 import org.apache.ibatis.type.Alias;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,6 +15,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@Builder
 /*
  * VO(Value Object) = DTO(Data Transfer Object) 클래스
  * 메서드와 메서드간에

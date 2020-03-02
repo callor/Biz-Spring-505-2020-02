@@ -100,8 +100,6 @@
 			<div class="form-group d-flex justify-content-end">
 				<button class="btn btn-primary mr-2">저장</button>
 				<button type="button" 
-					class="btn btn-danger mr-2">삭제</button>
-				<button type="button" 
 					class="btn btn-success">목록으로</button>
 
 			</div>
