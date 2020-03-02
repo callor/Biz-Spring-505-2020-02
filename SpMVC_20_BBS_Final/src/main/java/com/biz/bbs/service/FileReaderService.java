@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.core.io.ClassPathResource;
 
@@ -56,9 +57,42 @@ public class FileReaderService {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
 		return null;
+	} // getBBsData()
+	
+	public List<BBsVO> getMain(List<BBsVO> bbsList) {
+		
+		List<BBsVO> pList;
+		
+		// List 객체를 stream 객체로 변환
+		pList = bbsList
+			.stream()
+			.filter( vo->vo.getB_p_id() == 0)
+			.collect(Collectors.toList());
+		return pList;
+	}
+	
+	public List<BBsVO> getRepl(List<BBsVO> bbsList,BBsVO bbsVO){
+		
+		List<BBsVO> rList = new ArrayList<BBsVO>();
+		rList.add(bbsVO);
+		
+		List<BBsVO> tempList;
+		tempList = bbsList.stream()
+			.filter(vo->vo.getB_p_id() == bbsVO.getB_id())
+			.collect(Collectors.toList());
+		
+		if(tempList.size()<1) return rList;
+
+		// 재귀호출
+		// tempList에 데이터 있으면
+		// List에서 vo를 하나씩 추출하여
+		// 다시 getRepl() 메서드를 호출
+		// 더이상 리플이 없을때까지
+		tempList.forEach(vo->{
+			rList.addAll(this.getRepl(bbsList, vo));
+		});
+		return rList;
 	}
 	
 	
