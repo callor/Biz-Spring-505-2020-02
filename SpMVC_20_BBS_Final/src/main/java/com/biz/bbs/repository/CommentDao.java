@@ -18,13 +18,16 @@ public interface CommentDao {
 	 * 
 	 */
 	@Select("SELECT * FROM tbl_comment "
-			+ " WHERE c_b_id = #{c_b_id} "
+			+ " WHERE c_b_id = #{c_b_id}  "
+			+ " AND c_p_id = 0 "
 			+ " ORDER BY c_date_time DESC ")
 	public List<CommentVO> findByBId(long c_b_id);
 	
 	@Select("SELECT * FROM tbl_comment "
-			+ " WHERE c_p_id = #{c_p_id}")
+			+ " WHERE c_p_id = #{c_p_id} "
+			+ " ORDER BY c_date_time DESC ")
 	public List<CommentVO> findByPId(long c_p_id);
+	
 	
 	public int insert(CommentVO commentVO);
 	public int update(CommentVO commentVO);

@@ -12,7 +12,14 @@
 		// $(".cmt-item").click(function(){
 		$(document).on("click",".cmt-item",function() {
 			let id = $(this).data("id")
-			alert("cmt-item: " + id)
+
+			let writer = $(this).find("div.writer").find("b").text()
+			let subject = $(this).find("div.subject").text()
+			
+			$("#c_id").val(id)
+			$("#c_writer").val(writer)
+			$("#c_subject").val(subject)
+			
 		})
 		
 		$(document).on("click","div.cmt-item-del",
@@ -46,7 +53,21 @@
 			})
 		})
 		
-		$("button").click(function(){
+		$(document).on("click",".cmt-item-repl",function(event){
+			let b_id = "${BBS.b_id}"
+			let c_id = $(this).parent("div").data("id")
+			let data = {c_b_id:b_id,c_p_id:c_id}
+			
+			event.stopPropagation()
+			
+			$.get("${rootPath}/comment/repl",data,function(result){
+				$(".modal-body").html(result)
+				$(".modal-main").css("display","block")
+			})
+		})
+		
+		
+		$(document).on("click","button",function(){
 			let txt = $(this).text()
 			if(txt == '수정') {
 				document.location.href="${rootPath}/update?b_id=${BBS.b_id}"
@@ -54,6 +75,24 @@
 				if(confirm("삭제할까요")) {
 					document.location.replace("${rootPath}/delete/${BBS.b_id}")    
 				}
+			
+			} else if(txt == '답변저장') {
+				var formData = $("form.repl").serialize()
+				$.ajax({
+					
+					url : "${rootPath}/comment/insert",
+					data : formData,
+					type : "POST",
+					success:function(result) {
+						$(".modal-main").css("display","none")
+						$("div.cmt-list").html(result)
+					},
+					error:function(){
+						alert("서버와 통신오류")
+					}
+				})
+
+				
 			} else if(txt == '저장') {
 				
 				/*
@@ -74,7 +113,7 @@
 				}
 				
 				// serialize()를 사용하면 모든 문제 해결
-				var formData = $("form").serialize()
+				var formData = $("form.main").serialize()
 				// alert(formData)
 				$.ajax({
 					
@@ -88,9 +127,6 @@
 						alert("서버와 통신오류")
 					}
 				})
-				
-				
-				
 				return true
 			
 			} else if(txt == "답글"){
@@ -140,19 +176,20 @@
 		<div class="p-2">
 			<b>댓글을 남겨주세요</b>
 		</div>
-		<form method="POST" action="${rootPath}/comment/insert">
+		<form method="POST" class="main">
 			<div class="row p-4 bg-light">
+				<input type="hidden" name="c_id" id="c_id" value="0">
 				<input type="hidden" name="c_b_id" value="${BBS.b_id}">
 				<div class="col-2">
-					<input name="c_writer" 
+					<input name="c_writer" id="c_writer"
 						class="form-control" placeholder="작성자">
 				</div>
 				<div class="col-8">			
-					<input name="c_subject"
+					<input name="c_subject" id="c_subject"
 						class="form-control" placeholder="댓글을 입력하세요">
 				</div>
 				<div class="col-2  d-flex justify-content-center">
-					<button type="button" class="btn btn-success">저장</button>
+					<button type="button" class="btn btn-success btn-cmt-save">저장</button>
 				</div>
 			</div>
 		</form>
@@ -162,6 +199,73 @@
 		<div class="p-4 cmt-list">
 			<%@ include file="/WEB-INF/views/comment_list.jsp" %>
 		</div>
+
+<style>
+	div.modal-main {
+		position: fixed;
+		top:0;
+		left:0;
+		
+		width: 100%;
+		height: 100%;
+		
+		overflow: auto;
+		
+		background-color: rgba(0,0,0,0.4);
+		z-index: 10;
+		display: none;
+	}
+	
+	div.modal-content {
+		
+		width : 80%;
+		position: relative;
+		margin: auto;
+		top:300px;
+		padding:0;
+		
+	
+	}
+	
+	div.modal-header{
+		display: flex;
+		justify-content: flex-end;
+	}
+	
+	span.modal-close {
+		cursor: pointer;
+		font-size: 30px;
+		font-weight: bold;
+		color:black;
+	}
+	
+	span.modal-close:hover, span.modal-close:focus {
+		color:#000;
+	}
+
+</style>
+<script>
+$(function(){
+	$(".modal-close").click(function(){
+		$(".modal-main").css("display","none")
+	})
+})
+</script>
+
+<div class="modal-main">
+	<div class="modal-content">
+		<div class="modal-header">
+			<span class="modal-close">&times;</span>
+		</div>
+		<div class="modal-body">
+		
+		</div>
+	</div>
+</div>
+
+		
+		
+		
 	</section>
 </body>
 </html>
