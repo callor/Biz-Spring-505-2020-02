@@ -8,7 +8,9 @@ import org.apache.ibatis.annotations.Select;
 import com.biz.bbs.domain.BBsVO;
 
 public interface BBsDao {
-
+	
+	public List<BBsVO> selectLevel();
+	
 	// 원글만 리스트 추출
 	@Select("SELECT * FROM tbl_bbs "
 			+ " WHERE b_p_id = 0 "
