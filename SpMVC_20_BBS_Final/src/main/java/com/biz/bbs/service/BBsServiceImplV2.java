@@ -8,8 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.biz.bbs.domain.BBsVO;
 import com.biz.bbs.repository.BBsDao;
 
-import lombok.RequiredArgsConstructor;
-
 /*
  * 다중 select를 수행하는 method들이 있고
  * 재귀호출에 의해서 계속되는 select문이 실행된다.

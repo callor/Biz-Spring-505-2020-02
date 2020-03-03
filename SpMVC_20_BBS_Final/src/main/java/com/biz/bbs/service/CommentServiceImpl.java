@@ -10,13 +10,14 @@ import org.springframework.stereotype.Service;
 import com.biz.bbs.domain.CommentVO;
 import com.biz.bbs.repository.CommentDao;
 
-import lombok.RequiredArgsConstructor;
-
-@Service
-@RequiredArgsConstructor
+@Service("cmtV1")
 public class CommentServiceImpl implements CommentService {
 
-	private final CommentDao cmtDao;
+	protected final CommentDao cmtDao;
+	public CommentServiceImpl(CommentDao cmtDao) {
+		super();
+		this.cmtDao = cmtDao;
+	}
 	
 	@Override
 	public List<CommentVO> selectAll() {
