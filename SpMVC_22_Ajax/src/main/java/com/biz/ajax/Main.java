@@ -35,7 +35,19 @@ public static int[][] testCase = {
 		};
 
 	public static void main(String[] args) {
-		
+		/*
+		 * testCase를 2차원배열로 선언하고
+		 * 1차원 배열을 for 반복하면서
+		 * 1차원 배열이 포함하는 3개의 요소를 추출하여
+		 * 0번과 1번 요소를  times method에게 매개변수로 주입하고
+		 * times method는 두 숫자의 곱을 return 하도록 한다.
+		 * times method가 리턴한 값을 2번 요소와 비교하고
+		 * 값이 다르면 count 변수를 1증가킨다.
+		 * 
+		 * for 반복문이 모두 끝난 후 count 변수를 비교하여
+		 * 값이 0 보다 크면 테스트가 실패한 것으로 판단한다.
+		 * 
+		 */
 		int count = 0;
 		for(int i = 0 ; i < testCase.length ; i++) {
 			if(times(testCase[i][0], testCase[i][1]) != testCase[i][2]) {
