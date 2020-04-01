@@ -6,11 +6,11 @@
  <mapper namespace="com.biz.models.dao.UserDao">
  
  	<insert id="insert" parameterType="usersVO">
- 		INSERT INTO `books`.`tbl_user`
-			(`userId`,
-			`password`,
-			`userName`,
-			`userRolle`)
+ 		INSERT INTO tbl_user
+			(userId,
+			password,
+			userName,
+			userRolle)
 		VALUES (
 			#{userId},
 			#{password},

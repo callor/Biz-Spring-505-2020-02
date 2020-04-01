@@ -21,18 +21,25 @@
 	<bean id="sessionFactory"
 		class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="myDB" />
+		<property name="mapperLocations"
+			value="file:src/main/webapp/WEB-INF/spring/mapper/user-mapper.xml" />
+			
 		<property name="typeAliasesPackage"
 			value="com.biz.models.domain" />
 			
 	</bean>
 
+	<bean class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg ref="sessionFactory"/>
+	</bean>
+
+	<!-- 
 	<tx:annotation-driven />
 	<bean id="transactionManager"
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="myDB" />
 	</bean>
-
 	<mybatis-spring:scan base-package="com.biz.models.dao"/>
-	 
+	 -->
 
 </beans>
