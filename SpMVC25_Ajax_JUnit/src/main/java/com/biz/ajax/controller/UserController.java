@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -11,6 +12,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.biz.ajax.domain.UserVO;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Controller
 public class UserController {
 	
@@ -39,7 +43,7 @@ public class UserController {
 	 * 바로 view로 전송할수 있다.
 	 */
 	@RequestMapping(value="saveUser",method=RequestMethod.POST)
-	public String saveUser(@ModelAttribute("userVO") UserVO userVO) {
+	public String saveUser(@ModelAttribute("userVO") UserVO userVO,Model model) {
 		return "home";
 	}
 	
@@ -50,7 +54,9 @@ public class UserController {
 	 * 수행한다. 
 	 */
 	@ResponseBody
-	@RequestMapping(value="sendUserId",method=RequestMethod.POST)
+	@RequestMapping(value="sendUserId",
+				method=RequestMethod.POST,
+				produces = "application/json;charset=UTF-8")
 	public Map<String,Object> sendUserId(UserVO userVO) {
 		
 		Map<String,Object> msg = new HashMap<String,Object>();
@@ -64,8 +70,10 @@ public class UserController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value="sendUser",method=RequestMethod.POST)
-	public UserVO sendUser(UserVO userVO) {
+	@RequestMapping(value="sendUser",
+		method=RequestMethod.POST
+		)
+	public UserVO sendUser(@ModelAttribute("userVO") UserVO userVO) {
 		return userVO;
 	}
 	

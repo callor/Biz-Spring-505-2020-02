@@ -13,7 +13,7 @@ import com.biz.ajax.domain.UserVO;
 public class HomeController {
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String home() {
+	public String home(Model model) {
 	
 		UserVO userVO = new UserVO();
 		
@@ -25,7 +25,7 @@ public class HomeController {
 		 * web client로 전송하라
 		 * 		(*.html 코드로 변환되어서 전송)
 		 */
-		// model.addAttribute("userVO",userVO.sampleVO());
+		model.addAttribute("userVO",userVO.sampleVO());
 		return "home";
 	
 	}
