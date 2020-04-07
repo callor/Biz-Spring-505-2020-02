@@ -21,7 +21,15 @@ public class MessageVO implements Serializable{
 	private String userName;
 	private String message;
 	private String sendUser;
+	private String toUser;
 	
 }
+
+
+
+
+
+
+
 
 

@@ -8,6 +8,11 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>나의 홈페이지</title>
 <style>
+	#message_list {
+		border : 1px solid red;
+		height: 25vh;
+		overflow: auto;
+	}
 	.from, .to {
 		padding:5px;
 	}
@@ -84,11 +89,12 @@
 					// 동적 tag를 만드는 jquery 코드
 					$("<option/>",
 					{
-						value:userList[userListKeys[i]].userName,
+						value:userListKeys[i],
 						text:userList[userListKeys[i]].userName
 					})
 				)
 			}
+			return false;
 		}
 		
 		let html = "<div class='from text-right'>"  
@@ -99,6 +105,9 @@
 		html += "</div>"
 		
 		$("#message_list").append(html)
+		$("#message_list").scrollTop(
+				$("#message_list").prop("scrollHeight")
+			)
 		
 	};
 
@@ -118,6 +127,10 @@ $(function(){
 	})
 
 	$(document).on("click","#btn_send",function(){
+		
+			let toUserId = $("#toList").val()
+			let toUserName = $("#toList option:checked").text()
+		
 			let userName = $("#userName").val()
 			if(userName == "") {
 				alert("보내는 사람 이름을 입력하세요")
@@ -127,6 +140,7 @@ $(function(){
 			// userName과 message를 묶어서 JSON 데이터로 생성
 			let message = {
 					userName : userName,
+					toUser : toUserId,
 					message : $("#message").val()
 			}
 			
@@ -135,8 +149,17 @@ $(function(){
 			html += "나 : "
 			html += "</span>"
 			html += message.message
+			
+			html += "<span>("
+			html += toUserName
+			html += ")</span>"
+			
 			html += "</div>"
+
 			$("#message_list").append(html)
+			$("#message_list").scrollTop(
+				$("#message_list").prop("scrollHeight")
+			)
 
 			// socket을 통해 json 데이터를 보내기위해
 			// json 형 문자열로 변환시킨 후 전송
@@ -156,6 +179,10 @@ $(function(){
 <header class="jumbotron bg-success">
 	<h2 class="text-white text-center">MY CHAT SERVICE</h2>
 </header>
+<section class="container-fluid message-container">
+	<div id="message_list">
+	</div>
+</section>
 <section class="container-fluid">
 	<form>
 		<div class="form-group">
@@ -176,12 +203,6 @@ $(function(){
 		</div>
 		<button id="btn_send" class="btn btn-primary">전송</button>
 	</form>
-</section>
-<section class="container-fluid">
-	<div id="user_list" class="col-3" >
-	</div>
-	<div id="message_list" class="col-8">
-	</div>
 </section>
 
 </body>

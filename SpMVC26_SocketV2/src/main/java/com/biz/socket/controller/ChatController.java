@@ -144,12 +144,24 @@ public class ChatController extends TextWebSocketHandler {
 		 * Gson을 사용하여 문자열형 JSON 데이터를 VO로 변환
 		 */
 		MessageVO messageVO = gson.fromJson(message.getPayload(), MessageVO.class);
-
+		
 		String sendMessage = String.format("%s 로부터 : %s", messageVO.getUserName(), messageVO.getMessage());
-
 		String jSonTextMessage = objMapper.writeValueAsString(messageVO);
-		this.sendNotMeMessage(session, jSonTextMessage);
 
+		if(messageVO.getToUser().equalsIgnoreCase("ALL")) {
+			// 나를 제외한 전체에게 메시지 보내기
+			this.sendNotMeMessage(session, jSonTextMessage);
+		} else {
+			// 전체가 아니면 전송된 session id값을 sessionList에서
+			// 조회하여 일치하는 값이 있으면
+			// 해당 접속자에게만 메시지 보내기
+			for(WebSocketSession ws:sessionList) {
+				if(ws.getId().equals(messageVO.getToUser())) {
+					this.sendMeMessage(ws,jSonTextMessage);
+					break;
+				}
+			}
+		}
 	}
 
 	// 요청한 접속자에게만 메시지 보내기
