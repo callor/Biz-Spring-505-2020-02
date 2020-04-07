@@ -54,12 +54,13 @@
 			return false;
 		}
 		
-		alert(mJson.msg)
+		// alert(mJson.msg)
 		if(mJson.msg && mJson.msg == 'userList') {
 
 			// alert(mJson.userList)
 
 			let userList = JSON.parse(mJson.userList)
+			$("#toList").empty()
 			$("#toList").append(
 					
 					// 동적 tag를 만드는 jquery 코드
@@ -68,7 +69,6 @@
 						value:"all",
 						text:"전체"
 					})
-			
 			)
 
 			

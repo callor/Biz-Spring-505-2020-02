@@ -77,9 +77,12 @@ public class ChatController extends TextWebSocketHandler {
 
 	@Override
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
+	
 		// TODO Auto-generated method stub
 		super.afterConnectionClosed(session, status);
 		sessionList.remove(session);
+		messageMap.remove(session.getId());
+	
 	}
 
 	@Override
