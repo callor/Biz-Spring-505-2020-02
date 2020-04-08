@@ -55,10 +55,6 @@
 			</list>
 		</property>
 	</bean> 
-	 
-
-
-
 
 	<!-- security 인증과 관련된 user DB 설정부분 -->
 	<!-- dataSource -->
@@ -66,8 +62,8 @@
 	<bean id="authDB" class="org.apache.commons.dbcp2.BasicDataSource">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver"/>
 		<property name="url" value="jdbc:mysql://localhost:3306/secur?serverTimezone=Asia/Seoul&amp;useSSL=false"/>
-		<property name="username" value="secur"/>
-		<property name="password" value="secur"/>
+		<property name="username" value="${mysql.username}"/>
+		<property name="password" value="${mysql.password}"/>
 	</bean>
 	
 	<context:annotation-config/>
