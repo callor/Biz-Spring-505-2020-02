@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
@@ -46,6 +47,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @Component
+
 public class ChatController extends TextWebSocketHandler {
 
 	List<WebSocketSession> sessionList;

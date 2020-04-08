@@ -31,7 +31,8 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>	
 
 <script>
-	var socket = new SockJS('http://localhost:8080/socket/chat');
+	var socket = new SockJS('http://192.168.4.12:8080/socket/chat');
+	// var socket = new SockJS('http://192.168.1.5:8080/socket/chat');
 	
 	// 소켓 서버에 접속 시작
 	socket.onopen = function() {

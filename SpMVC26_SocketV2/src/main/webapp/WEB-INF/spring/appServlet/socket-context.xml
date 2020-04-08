@@ -12,7 +12,7 @@
 	<bean id="chatHandler" 
 			class="com.biz.socket.controller.ChatController"/>		
 	
-	<websocket:handlers>
+	<websocket:handlers allowed-origins="http://192.168.1.5:8080,http://192.168.4.12:8080,http://localhost:8080">
 		<websocket:mapping handler="webHandler" path="/info"/>
 		<websocket:mapping handler="chatHandler" path="/chat"/>
 		<websocket:sockjs/>
