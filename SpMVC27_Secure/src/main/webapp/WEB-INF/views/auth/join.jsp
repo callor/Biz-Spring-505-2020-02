@@ -49,7 +49,7 @@
 .join_form input {
 	
 	background: none;
-	margin:20px auto;
+	margin:10px auto;
 	text-align: center;
 	
 	border:2px solid #3498db;
@@ -153,16 +153,55 @@ $(function(){
 		$("form").submit()
 		
 	})
+	
+	// 현재 입력박스에서 포커스가 벗어났을때 발생하는 이벤트
+	$(document).on("blur", "#username",function(){
+		let username = $(this).val()
+		if(username == "") {
+			$("#m_username").text("아이디는 반드시 입력해야 합니다")
+			return false;
+		}
+		
+		$.ajax({
+			
+			url : "${rootPath}/user/idcheck",
+			method : "GET",
+			data : {username : username},
+			success : function(result) {
+				if(result == "USE") {
+					$("#m_username").text("* 이미 가입된 사용자 이름입니다.")
+					$("#m_username").css("color","red")
+					return false
+				}
+			},
+			error:function(){
+				// alert("서버와 통신 오류")
+			}
+			
+		})
+		
+	})
+	
 })
 </script>
+	<style>
+		.message {
+			color:yellow;
+			font-weight: bold;
+			font-size: 0.3rem;
+		}
+	</style>
+
 	<form:form method="POST" 
 			action="${rootPath}/user/join" 
 			class="join_form">
 			
 		<h2>회원가입</h2>
+		
 		<input type="text" id="username" 
 					name="username" 
 					placeholder="사용자 ID">
+		<div class="message" id="m_username"></div>
 		<input type="password" id="password" 
 					name="password" 
 					placeholder="비밀번호">

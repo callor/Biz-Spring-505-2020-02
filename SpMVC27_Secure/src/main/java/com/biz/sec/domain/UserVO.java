@@ -19,9 +19,21 @@ import lombok.Setter;
  * Spring Security에서 제공하는 User라는 클래스를 상속하여
  * 사용할 것이다.
  * 
+ * 
+ * USerVO는 인턴스를 생성할때
+ * 생성자를 사용하여 초기 값을 설정하도록 디자인 되어 있다.
+ * 
  */
 
 public class UserVO extends User{
+
+	/*
+	 * VO 객체를 map에 담아서 req, res에 실어서 보낼때
+	 * 객체를 문자열형으로 변환하는 과정이 있다.
+	 * 이 과정을 serialize라고 하는데, 각 변환된 문자열이
+	 * 서로 흐트러지지 않도록 설정하는 키값
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@Getter @Setter
 	private String email;
