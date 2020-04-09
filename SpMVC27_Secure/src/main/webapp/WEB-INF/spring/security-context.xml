@@ -105,7 +105,7 @@
 		/>
 		
 		<security:form-login
-			login-page="/login"
+			login-page="/user/login"
 			login-processing-url=""
 			default-target-url=""
 			username-parameter="username"
