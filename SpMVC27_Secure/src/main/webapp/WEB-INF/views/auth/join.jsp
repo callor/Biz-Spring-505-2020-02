@@ -171,11 +171,15 @@ $(function(){
 				if(result == "USE") {
 					$("#m_username").text("* 이미 가입된 사용자 이름입니다.")
 					$("#m_username").css("color","red")
+					$("#username").focus()
 					return false
+				} else {
+					$("#m_username").text("* 사용가능한 ID 입니다.")
 				}
 			},
 			error:function(){
-				// alert("서버와 통신 오류")
+				$("#m_username").text("* 서버통신오류.")
+				return false;
 			}
 			
 		})
@@ -188,7 +192,7 @@ $(function(){
 		.message {
 			color:yellow;
 			font-weight: bold;
-			font-size: 0.3rem;
+			font-size: 0.5rem;
 		}
 	</style>
 
