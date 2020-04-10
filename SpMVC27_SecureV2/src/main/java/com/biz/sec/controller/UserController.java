@@ -48,7 +48,7 @@ public class UserController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value="/idcheck",method=RequestMethod.GET)
+	@RequestMapping(value="/idcheck",method=RequestMethod.POST)
 	public String idcheck(String username) {
 		
 		boolean ret = userService.isExistsUserName(username);
