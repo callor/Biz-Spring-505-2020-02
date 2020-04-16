@@ -2,6 +2,8 @@ package com.biz.sec.controller;
 
 import java.security.Principal;
 
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -63,23 +65,35 @@ public class UserController {
 	}
 	
 	@ResponseBody
+	@RequestMapping(value="/password",method=RequestMethod.GET)
+	public String password(String password) {
+		
+		boolean ret = userService.check_password(password);
+		if(ret) return "PASS_OK";
+		return "PASS_FAIL";
+	
+	}
+	
+	@ResponseBody
 	@RequestMapping(value="",method=RequestMethod.GET)
 	public String user() {
 		return "user HOME";
 	}
 	
-	@ResponseBody
+//	@ResponseBody
 	@RequestMapping(value="/mypage",method=RequestMethod.GET)
-	public UserDetailsVO mypage(Principal principal,
+	public String mypage(Principal principal,
 			Model model) {
 		
 		// principal
-		UserDetailsVO userVO = (UserDetailsVO) principal;
+		// UserDetailsVO userVO = (UserDetailsVO) principal;
+		UsernamePasswordAuthenticationToken upa
+			= (UsernamePasswordAuthenticationToken) principal;
+		
+		UserDetailsVO userVO = (UserDetailsVO) upa.getPrincipal();
 		
 		model.addAttribute("userVO",userVO);
-		// return "user/mypage";
-		return userVO;
-	
+		return "auth/user_view";
 	}
 	
 

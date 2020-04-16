@@ -1,5 +1,7 @@
 package com.biz.sec.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -7,12 +9,16 @@ import com.biz.sec.domain.UserDetailsVO;
 import com.biz.sec.domain.UserVO;
 import com.biz.sec.persistance.UserDao;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class UserService {
 
 	private final PasswordEncoder passwordEncoder;
 	private final UserDao userDao;
 	
+	@Autowired
 	public UserService(PasswordEncoder passwordEncoder, UserDao userDao) {
 		super();
 		this.passwordEncoder = passwordEncoder;
@@ -89,6 +95,17 @@ public class UserService {
 		return userVO;
 	}
 
+	public boolean check_password(String password) {
+		UserDetailsVO userVO 
+			= (UserDetailsVO) SecurityContextHolder
+			.getContext()
+			.getAuthentication()
+			.getPrincipal();
+		
+		log.debug(userVO.toString());
+		return passwordEncoder.matches(password,
+					userVO.getPassword());
+	}
 }
 
 

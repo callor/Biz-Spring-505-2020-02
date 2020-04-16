@@ -14,7 +14,8 @@ public interface UserDao {
 		
 	public void create_table(String create_table);
 	
-	@Select(" SELECT user_name AS username, "
+	@Select(" SELECT id, "
+			+ " user_name AS username, "
 			+ " user_pass AS password, "
 			+ " enabled, "
 			+ " email,phone,address "
