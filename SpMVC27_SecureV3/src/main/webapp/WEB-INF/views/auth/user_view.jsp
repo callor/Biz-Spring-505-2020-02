@@ -95,7 +95,8 @@
 		<form:input path="username"/>
 	</div>
 	<div class="password">
-		<input id="password" type="password" placeholder="비밀번호를 입력!!">
+		<input id="password" 
+				type="password" placeholder="비밀번호를 입력!!">
 	</div>
 	<div>
 		<form:input path="email"/>

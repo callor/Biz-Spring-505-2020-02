@@ -1,6 +1,5 @@
 package com.biz.sec.service;
 
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -14,7 +13,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.biz.sec.domain.AuthorityVO;
 import com.biz.sec.domain.UserDetailsVO;
 import com.biz.sec.domain.UserVO;
 import com.biz.sec.persistance.UserDao;
@@ -98,23 +96,31 @@ public class UserService {
 
 	public int update(UserDetailsVO userVO,String[] authList) {
 
-		Authentication oldAuth = SecurityContextHolder.getContext().getAuthentication();
+		Authentication oldAuth 
+			= SecurityContextHolder
+			.getContext()
+			.getAuthentication();
+		
+		UserDetailsVO oldUserVO 
+			= (UserDetailsVO) oldAuth.getPrincipal();
+		
+		oldUserVO.setEmail(userVO.getEmail());
+		oldUserVO.setPhone(userVO.getPhone());
+		oldUserVO.setAddress(userVO.getAddress());
 
 		int ret = userDao.update(userVO);
 		// DB update가 성공하면
 		// 로그인된 session정보를 update 수행
 		if (ret > 0) {
-
 			
 			Authentication newAuth 
 					= new UsernamePasswordAuthenticationToken(
-					userVO, // 변경된 사용자 정보 
+					oldUserVO, 	// 변경된 사용자 정보 
 					oldAuth.getCredentials(),
 					this.getAuthorities(authList)); // 변경된 ROLE 정보
 
 			SecurityContextHolder.getContext()
 						.setAuthentication(newAuth);
-			
 		}
 		return ret;
 

@@ -1,7 +1,6 @@
 package com.biz.sec.controller;
 
 import java.security.Principal;
-import java.util.List;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -98,9 +97,9 @@ public class UserController {
 		return "auth/user_view";
 	}
 
-	@ResponseBody
+//	@ResponseBody
 	@RequestMapping(value = "/mypage", method = RequestMethod.GET)
-	public UserDetailsVO mypage(Principal principal, Model model) {
+	public String mypage(Principal principal, Model model) {
 
 		UsernamePasswordAuthenticationToken upa 
 			= (UsernamePasswordAuthenticationToken) principal;
@@ -110,14 +109,31 @@ public class UserController {
 		userVO.setAuthorities(upa.getAuthorities());
 
 		model.addAttribute("userVO", userVO);
-//		return "auth/user_view";
-		return userVO;
+		return "auth/user_view";
+//		return userVO;
 	}
 
 	@RequestMapping(value = "/mypage", method = RequestMethod.POST)
-	public String mypage(UserDetailsVO userVO,
+	public String mypage(UserDetailsVO userVO,Principal principal,
 					String[] auth, Model model) {
 
+		/*
+		 * Security Session 정보가 
+		 * 저장된 메모리에 직접 접근하여
+		 * session user 정보를 수정하는 방법으로
+		 * 코드는 쉬워지나 보안에 
+		 * 치명적인 문제를 일으킬 수 있다.
+		 * 
+		UsernamePasswordAuthenticationToken upa 
+		= (UsernamePasswordAuthenticationToken) principal;
+	
+		UserDetailsVO oldUserVO
+		= (UserDetailsVO) upa.getPrincipal();
+		
+		oldUserVO.setEmail(userVO.getEmail());
+		
+		*/
+		
 		int ret = userService.update(userVO,auth);
 		return "redirect:/user/mypage";
 

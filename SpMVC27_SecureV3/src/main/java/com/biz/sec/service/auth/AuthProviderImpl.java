@@ -59,7 +59,7 @@ public class AuthProviderImpl implements AuthenticationProvider {
 		// UserDetailsService에서 보내준 사용자 정보를 
 		// Controller로 보내는 일을 수행
 		return new UsernamePasswordAuthenticationToken(
-				userVO, userVO.getPassword(),userVO.getAuthorities());
+				userVO, null,userVO.getAuthorities());
 	
 	}
 
