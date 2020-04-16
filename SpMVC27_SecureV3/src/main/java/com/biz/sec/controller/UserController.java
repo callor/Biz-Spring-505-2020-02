@@ -1,11 +1,10 @@
 package com.biz.sec.controller;
 
 import java.security.Principal;
+import java.util.List;
 
-import org.springframework.security.access.SecurityConfig;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,97 +20,107 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Slf4j
 @Controller
-@RequestMapping(value="/user")
+@RequestMapping(value = "/user")
 public class UserController {
-	
+
 	private final UserService userService;
-	
-	@RequestMapping(value="/login",method=RequestMethod.GET)
+
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String login() {
 		return "auth/login";
 	}
 
-	@RequestMapping(value="/join",method=RequestMethod.GET)
+	@RequestMapping(value = "/join", method = RequestMethod.GET)
 	public String join() {
 		return "auth/join";
 	}
 
 	@ResponseBody
-	@RequestMapping(value="/join",
-				method=RequestMethod.POST,
-				produces = "text/html;charset=UTF-8")
+	@RequestMapping(value = "/join", method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
 	public String join(String username, String password) {
 
-		log.debug("아이디 {}, 비번 {}",
-				username, 
-				password);
-		
+		log.debug("아이디 {}, 비번 {}", username, password);
+
 		userService.insert(username, password);
-		
+
 		// return "redirect:/";
-		return String.format("아이디 : <b>%s</b>, 비번 : <b>%s</b>", 
-						username, password);
-	
+		return String.format("아이디 : <b>%s</b>, 비번 : <b>%s</b>", username, password);
+
 	}
-	
+
 	@ResponseBody
-	@RequestMapping(value="/idcheck",method=RequestMethod.POST)
+	@RequestMapping(value = "/idcheck", method = RequestMethod.POST)
 	public String idcheck(String username) {
-		
+
 		boolean ret = userService.isExistsUserName(username);
-		if(ret) {
+		if (ret) {
 			return "Exists".toUpperCase(); // EXISTS
 		}
 		return "NonExists".toUpperCase(); // NONEXISTS
-	
+
 	}
-	
+
 	@ResponseBody
-	@RequestMapping(value="/password",method=RequestMethod.POST)
+	@RequestMapping(value = "/password", method = RequestMethod.POST)
 	public String password(String password) {
-		
+
 		boolean ret = userService.check_password(password);
-		if(ret) return "PASS_OK";
+		if (ret)
+			return "PASS_OK";
 		return "PASS_FAIL";
-	
+
 	}
-	
+
 	@ResponseBody
-	@RequestMapping(value="",method=RequestMethod.GET)
+	@RequestMapping(value = "", method = RequestMethod.GET)
 	public String user() {
 		return "user HOME";
 	}
-	
+
+	@RequestMapping(value = "/mypage1", method = RequestMethod.GET)
+	public String mypage(Model model) {
+
+		// 로그인한 사용자 정보
+		UserDetailsVO userVO 
+			= (UserDetailsVO) SecurityContextHolder
+			.getContext()
+			.getAuthentication()
+			.getPrincipal();
+
+		// 권한(ROLE) 리스트 추출하여 userVO에 setting
+		userVO.setAuthorities(
+				SecurityContextHolder
+				.getContext()
+				.getAuthentication()
+				.getAuthorities());
+
+		model.addAttribute("userVO", userVO);
+		return "auth/user_view";
+	}
+
 	@ResponseBody
-	@RequestMapping(value="/mypage",method=RequestMethod.GET)
-	public UserDetailsVO mypage(Principal principal,
-			Model model) {
+	@RequestMapping(value = "/mypage", method = RequestMethod.GET)
+	public UserDetailsVO mypage(Principal principal, Model model) {
+
+		UsernamePasswordAuthenticationToken upa 
+			= (UsernamePasswordAuthenticationToken) principal;
 		
-		// principal
-		// UserDetailsVO userVO = (UserDetailsVO) principal;
-//		UsernamePasswordAuthenticationToken upa
-//			= (UsernamePasswordAuthenticationToken) principal;
-		UserDetailsVO userVO = (UserDetailsVO) SecurityContextHolder
-					.getContext().getAuthentication().getPrincipal();
-		
-		// UserDetailsVO userVO = (UserDetailsVO) upa.getPrincipal();
-		
-		model.addAttribute("userVO",userVO);
+		UserDetailsVO userVO 
+			= (UserDetailsVO) upa.getPrincipal();
+		userVO.setAuthorities(upa.getAuthorities());
+
+		model.addAttribute("userVO", userVO);
 //		return "auth/user_view";
 		return userVO;
 	}
-	
-	@RequestMapping(value="/mypage",method=RequestMethod.POST)
-	public String mypage(UserDetailsVO userVO,Model model) {
 
-		int ret = userService.update(userVO);
+	@RequestMapping(value = "/mypage", method = RequestMethod.POST)
+	public String mypage(UserDetailsVO userVO,
+					String[] auth, Model model) {
+
+		int ret = userService.update(userVO,auth);
 		return "redirect:/user/mypage";
-	
+
+		
 	}
 }
-
-
-
-
-
-

@@ -59,7 +59,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		}
 
 // 		userDetails.setUsername(userVO.getUsername());
-//		userDetails.setPassword(userVO.getPassword());
+//		userVO.setPassword(userVO.getPassword());
 		
 		userVO.setEnabled(true);
 		

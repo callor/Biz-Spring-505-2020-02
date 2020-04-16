@@ -1,14 +1,20 @@
 package com.biz.sec.service;
 
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.biz.sec.domain.AuthorityVO;
 import com.biz.sec.domain.UserDetailsVO;
 import com.biz.sec.domain.UserVO;
 import com.biz.sec.persistance.UserDao;
@@ -21,35 +27,25 @@ public class UserService {
 
 	private final PasswordEncoder passwordEncoder;
 	private final UserDao userDao;
-	
+
 	@Autowired
 	public UserService(PasswordEncoder passwordEncoder, UserDao userDao) {
 		super();
 		this.passwordEncoder = passwordEncoder;
 		this.userDao = userDao;
-		
-		String create_user_table 
-				= " CREATE TABLE IF NOT EXISTS tbl_users (" + 
-				"	id bigint  PRIMARY KEY AUTO_INCREMENT, " + 
-				"	user_name varchar(50) UNIQUE, " + 
-				"	user_pass varchar(125), " + 
-				"   enabled boolean default true, " +
-				"	email varchar(50), " + 
-				"	phone varchar(20), " + 
-				"	address varchar(125) " + 
-				" ) ";
-		
-		String create_auth_table = 
-				" CREATE TABLE IF NOT EXISTS authorities (" + 
-				"	id bigint PRIMARY KEY AUTO_INCREMENT," + 
-				"    username varchar(50)," + 
-				"    authority varchar(50)" + 
-				" ) ";
-		
-		
+
+		String create_user_table = " CREATE TABLE IF NOT EXISTS tbl_users ("
+				+ "	id bigint  PRIMARY KEY AUTO_INCREMENT, " + "	user_name varchar(50) UNIQUE, "
+				+ "	user_pass varchar(125), " + "   enabled boolean default true, " + "	email varchar(50), "
+				+ "	phone varchar(20), " + "	address varchar(125) " + " ) ";
+
+		String create_auth_table = " CREATE TABLE IF NOT EXISTS authorities ("
+				+ "	id bigint PRIMARY KEY AUTO_INCREMENT," + "    username varchar(50)," + "    authority varchar(50)"
+				+ " ) ";
+
 		userDao.create_table(create_user_table);
 		userDao.create_table(create_auth_table);
-		
+
 	}
 
 	/**
@@ -58,39 +54,33 @@ public class UserService {
 	 * 
 	 * @param username
 	 * @param password
-	 * @return 
+	 * @return
 	 * 
-	 * 회원가입을 신청하면 비밀번호는 암호화하고
-	 * 아이디와 비번을 DB insert 수행
+	 *         회원가입을 신청하면 비밀번호는 암호화하고 아이디와 비번을 DB insert 수행
 	 * 
-	 * @update 2020-04-10
-	 * Map<String,String> 구조의 VO 데이터를
-	 * UserVO로 변경
+	 * @update 2020-04-10 Map<String,String> 구조의 VO 데이터를 UserVO로 변경
 	 * 
 	 */
 	public int insert(String username, String password) {
-		
+
 		// 회원가입 form에서 전달받은 password 값을 암호화 시키는 과정
 		String encPassword = passwordEncoder.encode(password);
-		UserVO userVO = UserVO.builder()
-							.username(username)
-							.password(encPassword).build();
-		
+		UserVO userVO = UserVO.builder().username(username).password(encPassword).build();
+
 		int ret = userDao.insert(userVO);
 		return ret;
-	
+
 	}
 
 	public boolean isExistsUserName(String username) {
-		
+
 		UserDetailsVO userVO = userDao.findByUserName(username);
 		// 이미 DB에 회원정보(username)이 저장되어 있다.
-		if(userVO != null && 
-				userVO.getUsername().equalsIgnoreCase(username)) {
+		if (userVO != null && userVO.getUsername().equalsIgnoreCase(username)) {
 			return true;
 		}
 		return false;
-	
+
 	}
 
 	public UserDetailsVO findById(long id) {
@@ -100,43 +90,48 @@ public class UserService {
 	}
 
 	public boolean check_password(String password) {
-		UserDetailsVO userVO 
-			= (UserDetailsVO) SecurityContextHolder
-			.getContext()
-			.getAuthentication()
-			.getPrincipal();
-		
+		UserDetailsVO userVO = (UserDetailsVO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
 		log.debug(userVO.toString());
-		return passwordEncoder.matches(password,
-					userVO.getPassword());
+		return passwordEncoder.matches(password, userVO.getPassword());
 	}
 
-	public int update(UserDetailsVO userVO) {
+	public int update(UserDetailsVO userVO,String[] authList) {
 
-		Authentication oldAuth 
-		= SecurityContextHolder
-			.getContext()
-			.getAuthentication();
-		
+		Authentication oldAuth = SecurityContextHolder.getContext().getAuthentication();
+
 		int ret = userDao.update(userVO);
-		if(ret > 0) {
+		// DB update가 성공하면
+		// 로그인된 session정보를 update 수행
+		if (ret > 0) {
+
 			
 			Authentication newAuth 
-			= new UsernamePasswordAuthenticationToken
-					(userVO,
-							oldAuth.getCredentials(),
-							oldAuth.getAuthorities());
-			SecurityContextHolder
-				.getContext()
-				.setAuthentication(newAuth);
+					= new UsernamePasswordAuthenticationToken(
+					userVO, // 변경된 사용자 정보 
+					oldAuth.getCredentials(),
+					this.getAuthorities(authList)); // 변경된 ROLE 정보
+
+			SecurityContextHolder.getContext()
+						.setAuthentication(newAuth);
+			
 		}
 		return ret;
-	
+
 	}
+
+	private Collection<GrantedAuthority> getAuthorities(String[] authList) {
+
+		List<GrantedAuthority> authorities 
+			= new ArrayList<GrantedAuthority>();
+		
+		for (String auth : authList) {
+			SimpleGrantedAuthority sAuth 
+					= new SimpleGrantedAuthority(auth);
+			authorities.add(sAuth);
+		}
+		return authorities;
+
+	}
+
 }
-
-
-
-
-
-

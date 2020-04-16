@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.biz.sec.domain.UserDetailsVO;
+import com.biz.sec.domain.UserVO;
 
 public class AuthProviderImpl implements AuthenticationProvider {
 
@@ -58,7 +59,7 @@ public class AuthProviderImpl implements AuthenticationProvider {
 		// UserDetailsService에서 보내준 사용자 정보를 
 		// Controller로 보내는 일을 수행
 		return new UsernamePasswordAuthenticationToken(
-				userVO, null,userVO.getAuthorities());
+				userVO, userVO.getPassword(),userVO.getAuthorities());
 	
 	}
 

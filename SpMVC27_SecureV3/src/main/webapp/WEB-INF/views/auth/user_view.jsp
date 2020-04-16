@@ -16,6 +16,15 @@
 	$(function(){
 		$("input").prop("readonly",true)
 		
+		$(document).on("click","p#auth_append",function(){
+			
+			let auth_input = $("<input/>",
+					{class:"auth",name:"auth"})
+			// auth_input.append($("<p/>",
+			//		{text:'제거',class:'auth_delete'}))		
+			$("div#auth_box").append(auth_input)
+		})
+		
 		$(document).on("click","#btn_update",function(){
 			let pass = $("#password").val()
 			if(pass == "") {
@@ -71,6 +80,10 @@
 		form div.password {
 			display: none;
 		}
+		
+		form input.auth {
+			display: block;
+		}
 
 	</style>
 </head>
@@ -93,10 +106,13 @@
 	<div>
 		<form:input path="address" />
 	</div>
-	<div>
+	<div id="auth_box">
+	<p id="auth_append">추가</p>
 	<c:if test="${not empty userVO.authorities}">
 		<c:forEach items="${userVO.authorities}" var="auth">
-			<input name="autherities" value="${auth.authority}">
+			<input name="auth" 
+					value="${auth.authority}" 
+					class="auth">
 		</c:forEach>
 	</c:if>
 	</div>
