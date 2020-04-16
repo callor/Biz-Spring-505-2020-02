@@ -27,14 +27,22 @@
 				return false;
 			}
 			if(pass != "") {
+				
 				$.ajax({
 					url : '${rootPath}/user/password',
-					method:'GET',
-					data : {password:pass},
+					method:'POST',
+					data : {
+						password:pass,
+						"${_csrf.parameterName}" : "${_csrf.token}"
+					},
 					success : function(result) {
 						if(result == "PASS_OK") {
+							
 							$("input").prop("readonly",false)
 							$("input").css("color","blue")
+							$("button#btn_save").prop("disabled",false)
+							$("button#btn_update").prop("disabled",true)
+							
 						} else {
 							alert("비밀번호가 일치하지 않습니다")
 						}
@@ -63,6 +71,7 @@
 		form div.password {
 			display: none;
 		}
+
 	</style>
 </head>
 <body>
@@ -85,8 +94,15 @@
 		<form:input path="address" />
 	</div>
 	<div>
+	<c:if test="${not empty userVO.authorities}">
+		<c:forEach items="${userVO.authorities}" var="auth">
+			<input name="autherities" value="${auth.authority}">
+		</c:forEach>
+	</c:if>
+	</div>
+	<div>
 		<button type="button" id="btn_update">수정</button>
-		<button type="button" id="btn_delete">삭제</button>
+		<button type="submit" id="btn_save" disabled="disabled">저장</button>
 	</div>
 	</form:form>
 </section>

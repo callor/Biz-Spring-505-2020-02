@@ -54,6 +54,14 @@
 				true
 			)
  	</insert>
+ 	
+ 	<update id="update" parameterType="userDetailsVO">
+ 		UPDATE tbl_users
+ 		SET email = #{email},
+ 			phone = #{phone},
+ 			address = #{address}
+ 		WHERE user_name = #{username}
+ 	</update>
  </mapper>
  
  

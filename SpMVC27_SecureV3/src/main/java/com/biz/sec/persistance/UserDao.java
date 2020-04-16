@@ -26,6 +26,8 @@ public interface UserDao {
 
 	
 	public UserDetailsVO findById(long id);
+
+	public int update(UserDetailsVO userVO);
 	
 }
 

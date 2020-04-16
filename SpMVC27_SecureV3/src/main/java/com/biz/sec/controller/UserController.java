@@ -2,7 +2,9 @@ package com.biz.sec.controller;
 
 import java.security.Principal;
 
+import org.springframework.security.access.SecurityConfig;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -65,7 +67,7 @@ public class UserController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value="/password",method=RequestMethod.GET)
+	@RequestMapping(value="/password",method=RequestMethod.POST)
 	public String password(String password) {
 		
 		boolean ret = userService.check_password(password);
@@ -80,23 +82,32 @@ public class UserController {
 		return "user HOME";
 	}
 	
-//	@ResponseBody
+	@ResponseBody
 	@RequestMapping(value="/mypage",method=RequestMethod.GET)
-	public String mypage(Principal principal,
+	public UserDetailsVO mypage(Principal principal,
 			Model model) {
 		
 		// principal
 		// UserDetailsVO userVO = (UserDetailsVO) principal;
-		UsernamePasswordAuthenticationToken upa
-			= (UsernamePasswordAuthenticationToken) principal;
+//		UsernamePasswordAuthenticationToken upa
+//			= (UsernamePasswordAuthenticationToken) principal;
+		UserDetailsVO userVO = (UserDetailsVO) SecurityContextHolder
+					.getContext().getAuthentication().getPrincipal();
 		
-		UserDetailsVO userVO = (UserDetailsVO) upa.getPrincipal();
+		// UserDetailsVO userVO = (UserDetailsVO) upa.getPrincipal();
 		
 		model.addAttribute("userVO",userVO);
-		return "auth/user_view";
+//		return "auth/user_view";
+		return userVO;
 	}
 	
+	@RequestMapping(value="/mypage",method=RequestMethod.POST)
+	public String mypage(UserDetailsVO userVO,Model model) {
 
+		int ret = userService.update(userVO);
+		return "redirect:/user/mypage";
+	
+	}
 }
 
 

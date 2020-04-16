@@ -1,6 +1,10 @@
 package com.biz.sec.service;
 
+import java.security.Principal;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -105,6 +109,29 @@ public class UserService {
 		log.debug(userVO.toString());
 		return passwordEncoder.matches(password,
 					userVO.getPassword());
+	}
+
+	public int update(UserDetailsVO userVO) {
+
+		Authentication oldAuth 
+		= SecurityContextHolder
+			.getContext()
+			.getAuthentication();
+		
+		int ret = userDao.update(userVO);
+		if(ret > 0) {
+			
+			Authentication newAuth 
+			= new UsernamePasswordAuthenticationToken
+					(userVO,
+							oldAuth.getCredentials(),
+							oldAuth.getAuthorities());
+			SecurityContextHolder
+				.getContext()
+				.setAuthentication(newAuth);
+		}
+		return ret;
+	
 	}
 }
 
