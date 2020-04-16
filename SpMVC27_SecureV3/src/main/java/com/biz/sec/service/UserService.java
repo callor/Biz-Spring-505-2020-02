@@ -12,25 +12,32 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.biz.sec.domain.AuthorityVO;
 import com.biz.sec.domain.UserDetailsVO;
 import com.biz.sec.domain.UserVO;
+import com.biz.sec.persistance.AuthoritiesDao;
 import com.biz.sec.persistance.UserDao;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
+
 public class UserService {
 
 	private final PasswordEncoder passwordEncoder;
 	private final UserDao userDao;
+	private final AuthoritiesDao authDao;
 
 	@Autowired
-	public UserService(PasswordEncoder passwordEncoder, UserDao userDao) {
+	public UserService(PasswordEncoder passwordEncoder, 
+					UserDao userDao,AuthoritiesDao authDao) {
 		super();
 		this.passwordEncoder = passwordEncoder;
 		this.userDao = userDao;
+		this.authDao = authDao;
 
 		String create_user_table = " CREATE TABLE IF NOT EXISTS tbl_users ("
 				+ "	id bigint  PRIMARY KEY AUTO_INCREMENT, " + "	user_name varchar(50) UNIQUE, "
@@ -59,6 +66,7 @@ public class UserService {
 	 * @update 2020-04-10 Map<String,String> 구조의 VO 데이터를 UserVO로 변경
 	 * 
 	 */
+	@Transactional
 	public int insert(String username, String password) {
 
 		// 회원가입 form에서 전달받은 password 값을 암호화 시키는 과정
@@ -66,6 +74,17 @@ public class UserService {
 		UserVO userVO = UserVO.builder().username(username).password(encPassword).build();
 
 		int ret = userDao.insert(userVO);
+		List<AuthorityVO> authList = new ArrayList();
+
+		authList.add(AuthorityVO.builder()
+				.username(userVO.getUsername())
+				.authority("ROLE_USER").build());
+		
+		authList.add(AuthorityVO.builder()
+				.username(userVO.getUsername())
+				.authority("USER").build());
+		
+		authDao.insert(authList);
 		return ret;
 
 	}
@@ -94,6 +113,8 @@ public class UserService {
 		return passwordEncoder.matches(password, userVO.getPassword());
 	}
 
+	
+	@Transactional
 	public int update(UserDetailsVO userVO,String[] authList) {
 
 		Authentication oldAuth 
@@ -112,6 +133,21 @@ public class UserService {
 		// DB update가 성공하면
 		// 로그인된 session정보를 update 수행
 		if (ret > 0) {
+//			ret = authDao.update(
+//					new ArrayList(Arrays.asList(authList))
+//			);
+			List<AuthorityVO> authCollection = new ArrayList();
+			for(String auth : authList) {
+				if(!auth.isEmpty()) {
+					AuthorityVO authVO = AuthorityVO.builder()
+							.username(userVO.getUsername())
+							.authority(auth).build();
+					authCollection.add(authVO);
+				}
+			}
+			authDao.delete(userVO.getUsername());
+			authDao.insert(authCollection);
+			
 			
 			Authentication newAuth 
 					= new UsernamePasswordAuthenticationToken(
@@ -130,14 +166,16 @@ public class UserService {
 
 		List<GrantedAuthority> authorities 
 			= new ArrayList<GrantedAuthority>();
-		
 		for (String auth : authList) {
-			SimpleGrantedAuthority sAuth 
-					= new SimpleGrantedAuthority(auth);
-			authorities.add(sAuth);
+			
+			if(!auth.isEmpty()) {
+				SimpleGrantedAuthority sAuth 
+				= new SimpleGrantedAuthority(auth);
+				authorities.add(sAuth);
+			}
 		}
 		return authorities;
-
+	
 	}
 
 }
