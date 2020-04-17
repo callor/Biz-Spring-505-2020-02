@@ -16,15 +16,6 @@
 	$(function(){
 		$("input").prop("readonly",true)
 		
-		$(document).on("click","p#auth_append",function(){
-			
-			let auth_input = $("<input/>",
-					{class:"auth",name:"auth"})
-			// auth_input.append($("<p/>",
-			//		{text:'제거',class:'auth_delete'}))		
-			$("div#auth_box").append(auth_input)
-		})
-		
 		$(document).on("click","#btn_update",function(){
 			let pass = $("#password").val()
 			if(pass == "") {
@@ -99,29 +90,21 @@
 				type="password" placeholder="비밀번호를 입력!!">
 	</div>
 	<div>
-		<form:input path="email"/>
+		<form:input path="email" placeholder="E-mail"/>
 	</div>
 	<div>
-		<form:input path="phone" />
+		<form:input path="phone" placeholder="전화번호"/>
 	</div>
 	<div>
-		<form:input path="address" />
-	</div>
-	<div id="auth_box">
-	<p id="auth_append">추가</p>
-	<c:if test="${not empty userVO.authorities}">
-		<c:forEach items="${userVO.authorities}" var="auth">
-			<input name="auth" 
-					value="${auth.authority}" 
-					class="auth">
-		</c:forEach>
-	</c:if>
+		<form:input path="address" placeholder="주소"/>
 	</div>
 	<div>
 		<button type="button" id="btn_update">수정</button>
 		<button type="submit" id="btn_save" disabled="disabled">저장</button>
+		<button type="button" id="btn_loss_pass">비밀번호찾기</button>
 	</div>
 	</form:form>
+
 </section>
 
 

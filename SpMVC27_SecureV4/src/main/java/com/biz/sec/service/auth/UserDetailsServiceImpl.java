@@ -61,7 +61,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 // 		userDetails.setUsername(userVO.getUsername());
 //		userVO.setPassword(userVO.getPassword());
 		
-		userVO.setEnabled(true);
+//		userVO.setEnabled(true);
 		
 		// 사용자 정보를 사용할수 있는가 아닌가를 세밀하게
 		// 제어하기 위한 칼럼

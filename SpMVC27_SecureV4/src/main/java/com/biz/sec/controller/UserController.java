@@ -94,7 +94,7 @@ public class UserController {
 				.getAuthorities());
 
 		model.addAttribute("userVO", userVO);
-		return "auth/user_view";
+		return "auth/mypage";
 	}
 
 //	@ResponseBody
@@ -109,7 +109,7 @@ public class UserController {
 		userVO.setAuthorities(upa.getAuthorities());
 
 		model.addAttribute("userVO", userVO);
-		return "auth/user_view";
+		return "auth/mypage";
 //		return userVO;
 	}
 
@@ -133,8 +133,7 @@ public class UserController {
 		oldUserVO.setEmail(userVO.getEmail());
 		
 		*/
-		
-		int ret = userService.update(userVO,auth);
+		int ret = userService.update(userVO);
 		return "redirect:/user/mypage";
 
 		

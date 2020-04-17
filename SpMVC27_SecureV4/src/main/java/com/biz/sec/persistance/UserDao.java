@@ -12,12 +12,6 @@ public interface UserDao {
 		
 	public void create_table(String create_table);
 	
-	@Select(" SELECT id, "
-			+ " user_name AS username, "
-			+ " user_pass AS password, "
-			+ " enabled, "
-			+ " email,phone,address "
-			+ " FROM tbl_users WHERE user_name = #{username} ")
 	public UserDetailsVO findByUserName(String username);
 	
 	public int insert(UserDetailsVO userVO);

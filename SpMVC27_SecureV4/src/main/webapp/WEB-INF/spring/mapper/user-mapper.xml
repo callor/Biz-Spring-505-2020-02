@@ -5,6 +5,22 @@
   
  <mapper namespace="com.biz.sec.persistance.UserDao">
 
+	<select id="findByUserName" resultMap="userAndAuthorities">
+		SELECT id, 
+		user_name AS username, 
+		user_pass AS password, 
+		enabled, 
+		email,phone,address 
+		FROM tbl_users WHERE user_name = #{username}
+	</select>
+
+	<select id="selectAll" resultMap="userAndAuthorities">
+		SELECT user_name AS username,
+			user_pass AS password,
+			email, phone,address 
+		FROM tbl_users
+	</select>
+
 	<resultMap type="userDetailsVO" 
 				id="userAndAuthorities">
 	
@@ -59,7 +75,8 @@
  		UPDATE tbl_users
  		SET email = #{email},
  			phone = #{phone},
- 			address = #{address}
+ 			address = #{address},
+ 			enabled = #{enabled}
  		WHERE user_name = #{username}
  	</update>
  </mapper>
