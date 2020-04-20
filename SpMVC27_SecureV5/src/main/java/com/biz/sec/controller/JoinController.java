@@ -43,7 +43,7 @@ public class JoinController {
 		return "join/join_email";
 	}
 
-	@ResponseBody
+	// @ResponseBody
 	@RequestMapping(value="/joinok",method=RequestMethod.POST)
 	public String joinok(
 			@ModelAttribute("userVO") UserDetailsVO userVO, 
