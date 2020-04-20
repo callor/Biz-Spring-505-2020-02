@@ -3,14 +3,17 @@ package com.biz.sec.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
 import com.biz.sec.domain.UserDetailsVO;
 import com.biz.sec.service.UserService;
+import com.biz.sec.utils.PbeEncryptor;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -64,5 +67,22 @@ public class JoinController {
 	}
 	
 	
+	@ResponseBody
+	@RequestMapping(value="/emailok",method=RequestMethod.GET)
+	public String emailOk(
+			@RequestParam("username") String username, 
+			@RequestParam("email") String email	) {
+		
+		return PbeEncryptor.getDecrypt(username)
+				+ PbeEncryptor.getDecrypt(email);
+		
+	}
 
 }
+
+
+
+
+
+
+

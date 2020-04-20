@@ -1,5 +1,6 @@
 package com.biz.sec.service;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -123,10 +124,16 @@ public class UserService {
 		userVO.setPassword(encPassword);
 		
 //		boolean bRet = mailService.join_send(userVO);
-		String sRet = mailService.join_send(userVO);
-		
+		String sRet;
+		try {
+			sRet = mailService.join_send(userVO);
+			return sRet;
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		// userDao.insert(userVO);
-		return sRet;
+		return null;
 	}
 
 	

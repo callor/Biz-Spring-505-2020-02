@@ -1,6 +1,9 @@
 package com.biz.sec.service;
 
-import java.util.Base64;
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLEncoder;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -70,40 +73,45 @@ public class MailSendService {
 	 * 
 	 * @param userVO
 	 * @return
+	 * @throws UnsupportedEncodingException 
 	 */
 	// public boolean join_send(UserDetailsVO userVO) {
-	public String join_send(UserDetailsVO userVO) {
+	public String join_send(UserDetailsVO userVO) throws UnsupportedEncodingException {
 			
 		String userName = userVO.getUsername();
 		String email = userVO.getEmail();
+		
 		
 		String encUserName = PbeEncryptor.getEncrypt(userName);
 		String encEmail = PbeEncryptor.getEncrypt(email);
 		
 		// localhost:8080/sec/join/email/callor/callor@callor.com
+		/*
+		 * jayspt를 사용하여 username과 email을 암호화 하였더니
+		 * 슬래시(/) 등 URL을 통해서 보내면 문제를 발생시키는
+		 * 특수문자들이 포함이 된다.
+		 * 이 특수문자를 URL을 통해서 정상적으로 보낼수 있도록
+		 * 암호화된 문자열을 URLEncoder.encode() method를 이용해서
+		 * encoding을 수행해 주어야 한다.
+		 */
 		StringBuilder email_link = new StringBuilder(); 
 		email_link.append("http://localhost:8080/sec/");
-		email_link.append("join/emailok/");
-		email_link.append(
-				Base64
-				.getUrlEncoder()
-				.encodeToString(encUserName.getBytes()));
-		email_link.append("/");
-		email_link.append(
-				Base64
-				.getUrlEncoder()
-				.encodeToString(encEmail.getBytes()));
+		email_link.append("join/emailok");
+		email_link.append("?username=" + URLEncoder.encode(encUserName,"UTF-8"));
+		email_link.append("&email=" + URLEncoder.encode(encEmail,"UTF-8"));
 		
 		StringBuilder email_message = new StringBuilder();
 		email_message.append("<h3>회원가입을 환영합니다</h3><br/>");
 		email_message.append("<p>회원가입절차를 마무리하려면 ");
 		email_message.append("Email 인증을 하여야 합니다<br/>");
+		// email_message.append("<p><a href='" + email_link.toString()) + "'>Email 인증</a>"")
 		email_message.append("<p><a href='%s'>Email 인증</a>");
+		
 		email_message.append(" 링크를 클릭하여 주세요");
 		
 		String send_message 
 			= String.format(email_message.toString(), 
-						email_link.toString()				
+						email_link.toString()		
 		);
 		return send_message;
 		
