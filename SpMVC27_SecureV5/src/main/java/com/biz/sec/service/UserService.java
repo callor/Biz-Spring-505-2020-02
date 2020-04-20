@@ -19,6 +19,7 @@ import com.biz.sec.domain.AuthorityVO;
 import com.biz.sec.domain.UserDetailsVO;
 import com.biz.sec.persistance.AuthoritiesDao;
 import com.biz.sec.persistance.UserDao;
+import com.biz.sec.utils.PbeEncryptor;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -111,7 +112,7 @@ public class UserService {
 	 * 
 	 */
 	@Transactional
-	public String insert(UserDetailsVO userVO) {
+	public int insert(UserDetailsVO userVO) {
 
 		// 회원정보에 저장할 준비가 되지만
 		// 로그인을 했을때 접근금지가 된 사용자가 된다.
@@ -123,20 +124,16 @@ public class UserService {
 			= passwordEncoder.encode(userVO.getPassword());
 		userVO.setPassword(encPassword);
 		
-//		boolean bRet = mailService.join_send(userVO);
 		String sRet;
 		try {
 			sRet = mailService.join_send(userVO);
-			return sRet;
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		// userDao.insert(userVO);
-		return null;
+		int ret = userDao.insert(userVO);
+		return ret ;
 	}
-
-	
 	
 	public boolean isExistsUserName(String username) {
 
@@ -235,6 +232,35 @@ public class UserService {
 
 	public UserDetailsVO findByUserName(String username) {
 		return userDao.findByUserName(username);
+	}
+	
+	@Transactional
+	public boolean emailok(String username, String email) {
+
+		String strUserName = PbeEncryptor.getDecrypt(username);
+		UserDetailsVO userVO 
+				= userDao.findByUserName(strUserName);
+		
+		String strEmail = PbeEncryptor.getDecrypt(email);
+		if(strEmail.equalsIgnoreCase(userVO.getEmail())) {
+		
+			userVO.setEnabled(true);
+			userDao.update(userVO);
+			
+			List<AuthorityVO> authList = new ArrayList();
+			authList.add(AuthorityVO.builder()
+					.username(userVO.getUsername())
+					.authority("ROLE_USER").build());
+			
+			authList.add(AuthorityVO.builder()
+					.username(userVO.getUsername())
+					.authority("USER").build());
+			authDao.insert(authList);
+			return true;
+		}
+		return false;
+		
+		
 	}
 
 

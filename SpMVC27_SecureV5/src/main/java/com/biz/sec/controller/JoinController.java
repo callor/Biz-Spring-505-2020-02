@@ -36,7 +36,6 @@ public class JoinController {
 	@RequestMapping(value="",method=RequestMethod.GET)
 	public String join(@ModelAttribute("userVO") UserDetailsVO userVO, Model model) {		
 		return "join/join";
-		
 	}
 	
 	@RequestMapping(value="/user",method=RequestMethod.POST)
@@ -52,32 +51,35 @@ public class JoinController {
 			Model model) {		
 				
 		log.debug("USERVO :" + userVO.toString());
-//		int ret = userService.insert(userVO);
-		String ret = userService.insert(userVO);
-		
+		int ret = userService.insert(userVO);
 		model.addAttribute("JOIN","EMAIL_OK");
 
 		// sesstionAttribute에 저장된 session값을 clear시키기
-		session.setComplete();
+		// session.setComplete();
 		log.debug("USERVO :" + userVO.toString());
-		
-//		return "join/join_email";
-		return ret;
+		return "join/join_email";
 		
 	}
 	
 	
-	@ResponseBody
 	@RequestMapping(value="/emailok",method=RequestMethod.GET)
 	public String emailOk(
-			@RequestParam("username") String username, 
-			@RequestParam("email") String email	) {
+			@ModelAttribute("userVO") UserDetailsVO userVO,
+			SessionStatus session,
+			Model model) {
 		
-		return PbeEncryptor.getDecrypt(username)
-				+ PbeEncryptor.getDecrypt(email);
+		boolean ret = userService.emailok(
+					userVO.getUsername(),
+					userVO.getEmail());
 		
+		session.setComplete();
+		if(ret) {
+			return "redirect:/user/login";
+		}else {
+			// 2020-04-21 추가
+			return "join/join_email_fail";
+		}
 	}
-
 }
 
 

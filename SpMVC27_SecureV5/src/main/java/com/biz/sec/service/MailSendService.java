@@ -26,7 +26,7 @@ public class MailSendService {
 	private final String from_email = "callor88@naver.com";
 
 	public MailSendService(
-		@Qualifier("gmailMailHander") 
+		@Qualifier("naverMailHander") 
 		JavaMailSender javaMailSender) {
 		
 		super();
@@ -35,11 +35,15 @@ public class MailSendService {
 	}
 
 	public void sendMail() {
-		
-		
 		String to_email = "callor@callor.com";
 		String subject = "메일보내기 테스트";
 		String content = "반갑습니다";
+		this.sendMail(to_email,subject,content);
+	}
+
+	public void sendMail(String to_email, 
+			String subject, 
+			String content) {
 		
 		MimeMessage message = javaMailSender.createMimeMessage();
 		MimeMessageHelper mHelper ;
@@ -59,9 +63,6 @@ public class MailSendService {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
-		
 	}
 
 	/**
@@ -76,7 +77,8 @@ public class MailSendService {
 	 * @throws UnsupportedEncodingException 
 	 */
 	// public boolean join_send(UserDetailsVO userVO) {
-	public String join_send(UserDetailsVO userVO) throws UnsupportedEncodingException {
+	public String join_send(UserDetailsVO userVO) 
+				throws UnsupportedEncodingException {
 			
 		String userName = userVO.getUsername();
 		String email = userVO.getEmail();
@@ -113,11 +115,11 @@ public class MailSendService {
 			= String.format(email_message.toString(), 
 						email_link.toString()		
 		);
+		String to_email = email;
+		String subject = "봄나라 회원인증 메일";
+		 this.sendMail(to_email,subject,send_message);
 		return send_message;
 		
 	}
-	
-	
-	
 	
 }
