@@ -14,7 +14,7 @@
 	height: 1000px;
 }
 </style>
-<section id="body">
+<section class="container body">
 
 
 </section>

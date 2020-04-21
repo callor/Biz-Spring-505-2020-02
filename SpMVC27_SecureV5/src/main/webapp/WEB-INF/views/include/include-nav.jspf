@@ -47,6 +47,12 @@ body {
 	margin-left:auto;
 }
 
+section.body {
+	position: relative;
+	top:100px;
+
+}
+
 </style>
 <script>
 $(function(){
@@ -66,7 +72,7 @@ $(function(){
 	$(document).on("click","a.logout",function(){
 		if(confirm("로그아웃 할까요?")) {
 			$.post("${rootPath}/logout",
-				{ ${_csrf.parameterName} : "${_csrf.token}" },
+				{ "${_csrf.parameterName}" : "${_csrf.token}" },
 				function(result){
 					document.location.replace("${rootPath}/")
 			})
@@ -76,20 +82,20 @@ $(function(){
 
 </script>
 <nav id="navbar">
-		<a href="${rootPath}/">HOME</a>
-		<a href="#">성적처리</a>
-		<a href="#">독서록관리</a>
-		
-		<sec:authorize access="isAnonymous()">
-			<a href="${rootPath}/user/login">로그인</a>
-		</sec:authorize>
-		<sec:authorize access="isAuthenticated()">
-			<a href="javascript:void(0)" class="logout">로그아웃</a>
-			<a href="${rootPath}/user/mypage">MY PAGE</a>
-		</sec:authorize>
-		<sec:authorize access="hasRole('ROLE_ADMIN')">
-			<a href="${rootPath}/admin">관리자 홈</a>
-		</sec:authorize>
+	<a href="${rootPath}/">HOME</a>
+	<a href="#">성적처리</a>
+	<a href="#">독서록관리</a>
+	
+	<sec:authorize access="isAnonymous()">
+		<a href="${rootPath}/user/login">로그인</a>
+	</sec:authorize>
+	<sec:authorize access="isAuthenticated()">
+		<a href="javascript:void(0)" class="logout">로그아웃</a>
+		<a href="${rootPath}/user/mypage">MY PAGE</a>
+	</sec:authorize>
+	<sec:authorize access="hasRole('ROLE_ADMIN')">
+		<a href="${rootPath}/admin">관리자 홈</a>
+	</sec:authorize>
 </nav>
 
 

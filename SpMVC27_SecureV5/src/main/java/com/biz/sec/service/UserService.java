@@ -4,6 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -68,7 +69,8 @@ public class UserService {
 	 * 
 	 *         회원가입을 신청하면 비밀번호는 암호화하고 아이디와 비번을 DB insert 수행
 	 * 
-	 * @update 2020-04-10 Map<String,String> 구조의 VO 데이터를 UserVO로 변경
+	 * 
+	 * 2020-04-10 Map 구조의 VO 데이터를 UserVO로 변경
 	 * 
 	 */
 	@Transactional
@@ -263,7 +265,77 @@ public class UserService {
 		
 	}
 
+	/**
+	 * @since 2020-04-21
+	 * 회원 정보를 받아서 DB에 저장하고
+	 * 회원정보를 활성화 할수 있도록 하기 위해
+	 * 인증정보를 생성한 후
+	 * Controller로 Return
+	 * 
+	 * @param userVO
+	 * @return
+	 */
+	public String insert_getToken(UserDetailsVO userVO) {
 
+		// DB에 저장
+		userVO.setEnabled(false);
+		
+		String encPassword 
+			= passwordEncoder.encode(userVO.getPassword());
+		userVO.setPassword(encPassword);
+		userDao.insert(userVO);
+		
+		// aldllsdf-kdfkdksfk-ffsdf
+		String email_token = UUID.randomUUID().toString()
+					.split("-")[0].toUpperCase();
+		
+		/*
+		email_token = UUID.randomUUID().toString();
+		String[] _t = email_token.split("-");
+		
+		email_token = _t[0];
+		email_token = email_token.toUpperCase();
+		*/
+
+		log.debug("EMAIL-TOKEN : " + email_token);
+		String enc_email_token 
+				= PbeEncryptor.getEncrypt(email_token);
+		
+		// Email 보내기
+		mailService.email_auth(userVO,email_token);
+		return enc_email_token;
+	
+	}
+
+	public boolean email_token_ok(String username, 
+					String secret_key, String secret_value) {
+		boolean bKey 
+		= PbeEncryptor.getDecrypt(secret_key)
+						.equals(secret_value);
+		
+		if(bKey) {
+			
+			String strUserName = PbeEncryptor.getDecrypt(username);
+			UserDetailsVO userVO =
+					userDao.findByUserName(strUserName);
+			
+			userVO.setEnabled(true);
+			userDao.update(userVO);
+			authDao.delete(userVO.getUsername());
+			
+			List<AuthorityVO> authList = new ArrayList<>();
+			authList.add(AuthorityVO.builder()
+					.username(userVO.getUsername())
+					.authority("ROLE_USER").build());
+			
+			authList.add(AuthorityVO.builder()
+					.username(userVO.getUsername())
+					.authority("USER").build());
+			authDao.insert(authList);
+			
+		}
+		return bKey;
+	}
 }
 
 
