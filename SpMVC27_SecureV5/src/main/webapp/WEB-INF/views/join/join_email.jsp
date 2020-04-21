@@ -44,17 +44,48 @@
 	})
 </script>
 <style>
-form {
-	width: 80%;
-	margin: 120px auto;
+form#userVO {
+	width: 60%;
+	margin: 30px auto;
 	display: flex;
 	flex-flow: column;
 	justify-content: center;
 	align-items: center;
+	padding:20px;
+	
+	z-index: 10;
+	border-radius: 20px;
+	box-shadow: 12px 12px 2px 1px rgba(0, 0, 255, 0.2);
+	background-color: #F0F9FF;
+}
+
+form#userVO legend {
+	color:blue;
+	font-size:2rem;
+	font-weight: bold;
+
+}
+
+
+form#userVO input {
+	margin : 10px 0;
 }
 
 span#secret {
 	display: none;
+}
+
+.p-auth,.p-auth-ok {
+	font-weight: bold;
+}
+
+.p-auth {
+	color:red;
+}
+
+
+.p-auth-ok {
+	color:blue;
 }
 </style>
 </head>
@@ -65,7 +96,8 @@ span#secret {
 		<form:form action="${rootPath}/join/join_last" modelAttribute="userVO">
 			<fieldset>
 			<legend>E-mail 인증</legend>
-			<div>회원가입을 완료하려면 Email 인증을 수행해야 합니다</div>
+			<hr/>
+			<p class="p-auth">회원가입을 완료하려면 Email 인증을 수행해야 합니다</p>
 			<div class="form-group">
 				<form:input type="email" 
 						class="form-control" path="email" placeholder="email" />
@@ -74,8 +106,8 @@ span#secret {
 			
 				<c:choose>
 					<c:when test="${JOIN == 'EMAIL_OK'}">
-						<p>
-							E-mail을 열어서 인증코드를 확인한 후 아래 입력란에 입력 후 인증 버튼을 클릭하세요 <span
+						<hr/>
+						<p class="p-auth-ok">E-mail을 열어서 인증코드를 확인한 후 아래 입력란에 입력 후 '인증하기' 버튼을 클릭하세요 <span
 								id="secret">${My_Email_Secret}</span>
 								<div class="form-group"> 
 						<input id="email_ok" class="form-control" >
