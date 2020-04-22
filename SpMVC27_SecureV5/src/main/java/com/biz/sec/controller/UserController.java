@@ -115,7 +115,7 @@ public class UserController {
 
 	@RequestMapping(value = "/mypage", method = RequestMethod.POST)
 	public String mypage(UserDetailsVO userVO,Principal principal,
-					String[] auth, Model model) {
+					Model model) {
 
 		/*
 		 * Security Session 정보가 

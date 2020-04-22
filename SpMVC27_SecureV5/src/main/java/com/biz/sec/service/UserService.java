@@ -14,6 +14,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.biz.sec.domain.AuthorityVO;
@@ -26,7 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
-
+@Transactional
 public class UserService {
 
 	private final PasswordEncoder passwordEncoder;
@@ -60,15 +61,15 @@ public class UserService {
 	}
 
 	/**
+	 * 회원가입을 신청하면 비밀번호는 암호화하고 
+	 * 아이디와 비번을 DB insert 수행
+	 * 
 	 * @since 2020-04-09
 	 * @author callor
 	 * 
 	 * @param username
 	 * @param password
 	 * @return
-	 * 
-	 *         회원가입을 신청하면 비밀번호는 암호화하고 아이디와 비번을 DB insert 수행
-	 * 
 	 * 
 	 * 2020-04-10 Map 구조의 VO 데이터를 UserVO로 변경
 	 * 
@@ -113,7 +114,8 @@ public class UserService {
 	 * @return
 	 * 
 	 */
-	@Transactional
+	@Transactional(isolation = Isolation.READ_COMMITTED,
+				rollbackFor = Exception.class )
 	public int insert(UserDetailsVO userVO) {
 
 		// 회원정보에 저장할 준비가 되지만
@@ -161,6 +163,7 @@ public class UserService {
 		return passwordEncoder.matches(password, userVO.getPassword());
 	}
 
+	@Transactional
 	public int update(UserDetailsVO userVO,String[] authList) {
 		
 		int ret = userDao.update(userVO);
@@ -180,6 +183,11 @@ public class UserService {
 		return ret;
 	}
 	
+	/**
+	 * MyPage Update 용
+	 * @param userVO
+	 * @return
+	 */
 	@Transactional
 	public int update(UserDetailsVO userVO) {
 
@@ -195,7 +203,7 @@ public class UserService {
 		oldUserVO.setPhone(userVO.getPhone());
 		oldUserVO.setAddress(userVO.getAddress());
 
-		int ret = userDao.update(userVO);
+		int ret = userDao.update(oldUserVO);
 		// DB update가 성공하면
 		// 로그인된 session정보를 update 수행
 		if (ret > 0) {
@@ -232,6 +240,7 @@ public class UserService {
 		return userDao.selectAll();
 	}
 
+	@Transactional
 	public UserDetailsVO findByUserName(String username) {
 		return userDao.findByUserName(username);
 	}
@@ -275,6 +284,7 @@ public class UserService {
 	 * @param userVO
 	 * @return
 	 */
+	@Transactional
 	public String insert_getToken(UserDetailsVO userVO) {
 
 		// DB에 저장
