@@ -2,6 +2,7 @@ package com.biz.shop.config;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
+import com.biz.shop.config.security.JasyptConfig;
 import com.biz.shop.config.security.SecurityConfig;
 /**
  * web.xml을 대신할 클래스
@@ -13,7 +14,12 @@ public class WebConfig extends AbstractAnnotationConfigDispatcherServletInitiali
 	@Override
 	protected Class<?>[] getRootConfigClasses() {
 		// TODO Auto-generated method stub
-		return new Class[] { RootConfig.class,SecurityConfig.class };
+		return new Class[] { 
+				RootConfig.class,
+				SecurityConfig.class,
+				JasyptConfig.class,
+				DBSetupConfig.class
+		};
 	}
 
 	@Override
