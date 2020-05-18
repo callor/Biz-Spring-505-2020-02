@@ -12,6 +12,7 @@ import lombok.Setter;
 public class AuthorityVO {
 	
 	private long id;
+	
 	/* 필수항목 필드변수
 	 * -----------------------------------*/
 	private String username;

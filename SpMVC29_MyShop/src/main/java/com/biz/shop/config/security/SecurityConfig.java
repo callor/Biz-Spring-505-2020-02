@@ -20,13 +20,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		.antMatchers("/admin/**").hasRole("ADMIN")
 		.antMatchers("/user/mypage").hasAnyRole("ADMIN","USER")
 		.antMatchers("/user/**").permitAll()
-		.antMatchers("/**").permitAll()
-		.anyRequest().authenticated(); // 위에 나열한 것 외에는 모두 인증 필요
+		.antMatchers("/**").permitAll();
+		// .anyRequest().authenticated(); // 위에 나열한 것 외에는 모두 인증 필요
 		
 		http.formLogin()
+		
+		// security에서 지원하는 login URL
+		.loginProcessingUrl("/login")
+		
+		// login form
 		.loginPage("/user/login")
 		.usernameParameter("username")
 		.passwordParameter("password");
+		
 		
 		http.logout()
 		.logoutUrl("/logout")
