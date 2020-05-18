@@ -3,10 +3,12 @@ package com.biz.shop.service;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
 import com.biz.shop.domain.UserDetailsVO;
 import com.biz.shop.persistance.UserDao;
 
+@Service
 public class UserDetailsServiceImp implements UserDetailsService{
 
 	private final UserDao userDao;
