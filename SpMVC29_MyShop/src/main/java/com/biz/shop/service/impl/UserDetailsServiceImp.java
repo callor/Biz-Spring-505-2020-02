@@ -1,4 +1,4 @@
-package com.biz.shop.service;
+package com.biz.shop.service.impl;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import com.biz.shop.domain.AuthorityVO;
 import com.biz.shop.domain.UserDetailsVO;
 import com.biz.shop.persistance.AuthorityDao;
+import com.biz.shop.persistance.DDL_Dao;
 import com.biz.shop.persistance.UserDao;
 
 @Service
@@ -22,9 +23,12 @@ public class UserDetailsServiceImp implements UserDetailsService{
 	private final UserDao userDao;
 	private final AuthorityDao authDao;
 	
-	public UserDetailsServiceImp(UserDao userDao,AuthorityDao authDao) {
+	private final DDL_Dao ddl_dao;
+	
+	public UserDetailsServiceImp(UserDao userDao,AuthorityDao authDao,DDL_Dao ddl_dao) {
 		this.userDao = userDao;
 		this.authDao = authDao;
+		this.ddl_dao = ddl_dao;
 	
 		// 테이블 생성 부분을 코딩하기 위한 방법
 		String create_user_table = " CREATE TABLE IF NOT EXISTS tbl_users ("
@@ -42,10 +46,8 @@ public class UserDetailsServiceImp implements UserDetailsService{
 				+ "    username varchar(50)," + "    authority varchar(50)"
 				+ " ) ";
 
-	
-		userDao.create_table(create_user_table);
-		userDao.create_table(create_auth_table);
-		
+		ddl_dao.create_table(create_user_table);
+		ddl_dao.create_table(create_auth_table);
 	
 	}
 	

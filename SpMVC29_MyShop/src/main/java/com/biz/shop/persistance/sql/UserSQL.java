@@ -1,4 +1,4 @@
-package com.biz.shop.persistance;
+package com.biz.shop.persistance.sql;
 
 import org.apache.ibatis.jdbc.SQL;
 
