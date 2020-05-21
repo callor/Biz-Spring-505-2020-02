@@ -83,7 +83,7 @@ $(function(){
 </script>
 <nav id="navbar">
 	<a href="${rootPath}/">HOME</a>
-	<a href="${rootPath}/product/insert">상품관리</a>
+	<a href="#">SPRING SHOP</a>
 	
 	<sec:authorize access="isAnonymous()">
 		<a href="${rootPath}/user/login" class="login">로그인</a>

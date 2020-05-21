@@ -30,8 +30,8 @@ public class ProductVO {
 	
 	private String p_file ; // 상품의 대표이미지
 	
-	private List<String> p_color_list;
-	private List<String> p_size_list;
+//	private List<String> p_color_list;
+//	private List<String> p_size_list;
 	
 	
 }
