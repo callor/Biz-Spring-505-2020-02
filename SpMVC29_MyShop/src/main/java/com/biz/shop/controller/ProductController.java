@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.biz.shop.domain.ProductVO;
 import com.biz.shop.service.ProductService;
@@ -59,9 +60,27 @@ public class ProductController {
 
 	@RequestMapping(value="/insert",method=RequestMethod.POST)
 	public String insert(ProductVO productVO) {
+		
+		proService.insert(productVO);
 		return "redirect:/product/list";
+	
 	}
 
+	
+	@ResponseBody
+	@RequestMapping(value="/code_check",method=RequestMethod.GET)
+	public String code_check(String p_code) {
+		
+		ProductVO proVO = proService.findByPCode(p_code);
+		if(proVO != null && proVO.getP_code().equals(p_code)) {
+			return "EXISTS";
+		} else {
+			return "NONE";
+		}
+	}
+	
+	
+	
 	public String deteilView(long id) {
 		return "product/deteil";
 	}

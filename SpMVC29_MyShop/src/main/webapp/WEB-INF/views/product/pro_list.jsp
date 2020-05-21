@@ -47,7 +47,9 @@
 		</c:choose>
 	</table>
 	<div class="text-right">
-	   <button class="btn btn-primary text-right">상품정보 등록</button>
+	   <button 
+	   onclick="location.href='${rootPath}/product/insert' "
+	   class="btn btn-primary text-right">상품정보 등록</button>
 	</div>
 	
 </section>
