@@ -47,9 +47,20 @@ div.p_detail_data {
 				<div class="p_detail_data">${productVO.p_name}</div>
 			</div>
 			<div class="p_detail_box">
+				<div class="p_detail_label">매입가격</div>
+				<div class="p_detail_data">${productVO.p_iprice}</div>
+			</div>
+			<div class="p_detail_box">
 				<div class="p_detail_label">판매가격</div>
 				<div class="p_detail_data">${productVO.p_oprice}</div>
 			</div>
+			<div class="p_detail_box">
+				<div class="p_detail_label">대표이미지</div>
+				<div class="p_detail_data">
+					<img width="100px" 
+					src="${rootPath}/upload/${productVO.p_file}"></div>
+			</div>
+			
 		</article>
 	</section>
 </body>

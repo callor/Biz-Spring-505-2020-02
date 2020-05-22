@@ -22,7 +22,8 @@ public interface ProductDao {
 	@Select("SELECT * FROM tbl_product")
 	public List<ProductVO> selectAll();
 	
-	@Select("SELECT * FROM tbl_product WHERE p_code = #{p_code}")
+	@Select("SELECT * FROM tbl_product "
+			+ "WHERE p_code = #{p_code}")
 	public ProductVO findByPCode(String p_code);
 	
 	// mysql 중간문자열 검색하기

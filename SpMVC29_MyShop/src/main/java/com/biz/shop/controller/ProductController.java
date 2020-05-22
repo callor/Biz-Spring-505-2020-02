@@ -88,9 +88,10 @@ public class ProductController {
 	@RequestMapping(value="/detail/{p_code}")
 	public String deteilView(
 			ProductVO productVO,
-			@PathVariable(name="p_code") String p_code) {
+			@PathVariable(name="p_code") String p_code,Model model) {
 		
 		productVO= proService.findByPCode(p_code);
+		model.addAttribute("productVO",productVO);
 		return "product/pro_detail";
 	
 	}

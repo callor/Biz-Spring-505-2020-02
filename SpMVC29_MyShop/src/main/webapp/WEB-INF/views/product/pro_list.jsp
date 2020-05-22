@@ -10,9 +10,17 @@
 <html>
 <head>
 <%@ include file="/WEB-INF/views/include/include-head.jspf"%>
-<style>
+<script>
+$(function(){
 
-</style>
+	$(".p_list").click(function(){
+		let p_code =$(this).data('pcode')
+		document.location.href="${rootPath}/product/detail/" + p_code
+	})
+})
+
+</script>
+
 </head>
 <body>
 <%@ include file="/WEB-INF/views/include/include-nav.jspf" %>
@@ -35,7 +43,7 @@
 			<c:otherwise>
 				<tbody>
 				<c:forEach items="${proList}" var="proVO">
-					<tr>
+					<tr class="p_list" data-pcode="${proVO.p_code}">
 						<td>${proVO.p_code}</td>
 						<td>${proVO.p_name}</td>
 						<td>${proVO.p_iprice}</td>
