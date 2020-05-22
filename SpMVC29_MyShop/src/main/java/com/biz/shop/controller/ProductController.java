@@ -5,9 +5,12 @@ import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.biz.shop.domain.ProductVO;
 import com.biz.shop.service.ProductService;
@@ -59,9 +62,12 @@ public class ProductController {
 	}
 
 	@RequestMapping(value="/insert",method=RequestMethod.POST)
-	public String insert(ProductVO productVO) {
+	public String insert(ProductVO productVO,
+			@RequestParam("file") MultipartFile file) {
 		
-		proService.insert(productVO);
+		log.debug("파일이름:"+file.getOriginalFilename());
+		
+		proService.insert(productVO,file);
 		return "redirect:/product/list";
 	
 	}
@@ -78,11 +84,15 @@ public class ProductController {
 			return "NONE";
 		}
 	}
+		
+	@RequestMapping(value="/detail/{p_code}")
+	public String deteilView(
+			ProductVO productVO,
+			@PathVariable(name="p_code") String p_code) {
+		
+		productVO= proService.findByPCode(p_code);
+		return "product/pro_detail";
 	
-	
-	
-	public String deteilView(long id) {
-		return "product/deteil";
 	}
 
 	public String update(long id) {

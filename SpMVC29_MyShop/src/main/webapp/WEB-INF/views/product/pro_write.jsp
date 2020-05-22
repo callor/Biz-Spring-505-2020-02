@@ -5,7 +5,6 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" 
 			prefix="form" %>
 <c:set var="rootPath" value="${pageContext.request.contextPath}" />
-			
 <!DOCTYPE html>
 <html>
 <head>
@@ -85,7 +84,9 @@ $(function(){
 <body>
 <%@ include file="/WEB-INF/views/include/include-nav.jspf" %>
 <section class="container body">
-	<form:form modelAttribute="productVO">
+	<form:form modelAttribute="productVO" 
+		action="?${_csrf.parameterName}=${_csrf.token}"
+				enctype="multipart/form-data">
 		<fieldset>
 			<legend>상품정보 등록</legend>
 
@@ -106,6 +107,11 @@ $(function(){
 						class="form-control" 
 						placeholder="판매가격"/>
 			</div>
+			
+			<div class="form-group">
+				<input type="file" id="file" name="file">
+			</div>
+			
 			<div class="button-group text-right">
 				<button type="button"
 					class="btn btn-primary save">저장</button>
@@ -115,7 +121,6 @@ $(function(){
 		</fieldset>	
 	</form:form>
 </section>
-
 
 </body>
 </html>

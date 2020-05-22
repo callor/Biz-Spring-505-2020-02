@@ -36,11 +36,10 @@ public class WebConfig extends AbstractAnnotationConfigDispatcherServletInitiali
 		// TODO Auto-generated method stub
 		return new String[] { "/" };
 	}
-
-	
 	
 	/*
 	 * 한글 인코딩 필터링 처리
+	 * security를 적용하면 여기설정한 필더가 작동을 하지 않는다
 	 */
 	@Override
 	protected Filter[] getServletFilters() {
