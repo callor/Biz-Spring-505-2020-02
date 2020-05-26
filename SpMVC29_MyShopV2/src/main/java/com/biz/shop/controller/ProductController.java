@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.biz.shop.domain.ProSizeVO;
 import com.biz.shop.domain.ProductVO;
 import com.biz.shop.service.ProOptionsService;
 import com.biz.shop.service.ProductService;
@@ -102,6 +103,34 @@ public class ProductController {
 	
 	}
 
+	
+	@ResponseBody
+	@RequestMapping(value="/insert_size",method=RequestMethod.POST)
+	public String insert_size(ProSizeVO proSizeVO) {
+
+		log.debug("SIZE:" + proSizeVO.getS_size());
+		log.debug("P_CODE:"+ proSizeVO.getP_code());
+		
+		int ret = proOPTService.getProSize(proSizeVO);
+		if(ret > 0) {
+			return "EXISTS"; // 이미 등록된 사이즈 정보이므로 저장하지 않음
+		}
+		
+		proOPTService.insert_size(proSizeVO);
+		return "OK";
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/delete_size",method=RequestMethod.POST)
+	public String delete_size(ProSizeVO proSizeVO) {
+		
+		int ret =proOPTService.delete_size(proSizeVO);
+		return "OK";
+		
+	}
+
+	
+	
 	public String update(long id) {
 		return "product/write";
 	}

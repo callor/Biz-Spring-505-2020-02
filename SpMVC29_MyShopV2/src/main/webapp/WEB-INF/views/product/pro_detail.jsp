@@ -48,13 +48,53 @@ div.p_detail_white
 		let size_standard = $("#m_size_list option:selected").val()
 		let size_name = $("#m_size_list option:selected").text()
 		
-		$("#p_size_list").append(
-				$( "<option/>",{value:size_standard,text:size_name} )
-		)
+		// select box의 multiple이 false이면 작동하지 않는 스크립트
+		if(!size_standard) {
+			alert("추가할 사이즈를 선택하세요")
+		} 
+		
+		$.ajax({
+			
+			url : '${rootPath}/product/insert_size',
+			method : 'POST',
+			
+			data : {
+				s_size : size_standard,
+				p_code : '${productVO.p_code}'
+			},
+			beforeSend : function(ax) {
+				ax.setRequestHeader(
+					"${_csrf.headerName}","${_csrf.token}"		
+				)
+			},
+		})
+		.done(function(result) {
+			
+			if(result == "EXISTS") {
+				alert("이미 등록된 사이즈 정보입니다")
+			} else {
+				$("#p_size_list").append(
+						$( "<option/>",{value:size_standard,text:size_name} )
+				)
+			}
+		})
 	 })
 	 
 	 $("button.size-delete").click(function() {
-		 $("#p_size_list option:selected").remove()
+		 
+		 $.ajax({
+			url : '${rootPath}/product/delete_size',
+			method:"POST",
+			data :{p_code:'${productVO.p_code}', s_size : size_standard},
+			beforeSend : function(ax) {
+				ax.setRequestHeader(
+					"${_csrf.headerName}","${_csrf.token}"		
+				)
+			},
+		 })
+		 .done(function(result){
+			 $("#p_size_list option:selected").remove()	 
+		 })
 	 }) 
  })
  
@@ -102,7 +142,7 @@ div.p_detail_white
 					<div class="p_detail_white">
 						<h5>사이즈 선택</h5>
 						<form:select path="m_size_list" 
-								class="form-control" multiple='false'>
+								class="form-control">
 							<form:options 
 								items="${m_size_list}"
 								itemLabel="o_name" itemValue="o_standard" />
@@ -115,7 +155,12 @@ div.p_detail_white
 						class="btn btn-warning size-delete">▲ 삭제</button>
 
 						<form:select path="p_size_list"
-								class="form-control" />
+								class="form-control">
+							<form:options 
+									items="${productVO.p_size_list}"
+									itemLabel="s_size" 
+									itemValue="s_size"/>
+						</form:select>
 					</div>
 					
 					<div class="p_detail_white">

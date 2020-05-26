@@ -34,9 +34,7 @@ public class ProductVO {
 	private List<String> m_color_list;
 	private List<String> m_size_list;
 	
+	private List<ProSizeVO> p_size_list;
 	private List<String> p_color_list;
-	private List<String> p_size_list;
 
-
-	
 }
