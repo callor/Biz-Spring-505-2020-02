@@ -3,6 +3,7 @@ package com.biz.shop.service.impl;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.biz.shop.domain.ProductVO;
@@ -13,6 +14,7 @@ import com.biz.shop.service.ProductService;
 
 import lombok.extern.slf4j.Slf4j;
 
+@Transactional
 @Slf4j
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -35,11 +37,13 @@ public class ProductServiceImpl implements ProductService {
 		
 	}
 	
+	@Transactional
 	@Override
 	public int insert(ProductVO productVO) {
 		return proDao.insert(productVO);
 	}
 	
+	@Transactional
 	@Override
 	public int insert(ProductVO productVO, MultipartFile file) {
 

@@ -74,7 +74,11 @@ div.p_detail_white
 				alert("이미 등록된 사이즈 정보입니다")
 			} else {
 				$("#p_size_list").append(
-						$( "<option/>",{value:size_standard,text:size_name} )
+					$( "<option/>",
+					{
+						value:result.s_size,
+						text:size_name,
+						'data-id' : result.s_seq} )
 				)
 			}
 		})
@@ -82,10 +86,11 @@ div.p_detail_white
 	 
 	 $("button.size-delete").click(function() {
 		 
+		 let seq = $("#p_size_list option:selected").data("id")
 		 $.ajax({
 			url : '${rootPath}/product/delete_size',
 			method:"POST",
-			data :{p_code:'${productVO.p_code}', s_size : size_standard},
+			data :{s_seq:seq},
 			beforeSend : function(ax) {
 				ax.setRequestHeader(
 					"${_csrf.headerName}","${_csrf.token}"		
@@ -156,10 +161,13 @@ div.p_detail_white
 
 						<form:select path="p_size_list"
 								class="form-control">
-							<form:options 
-									items="${productVO.p_size_list}"
-									itemLabel="s_size" 
-									itemValue="s_size"/>
+								
+							<c:forEach items="${productVO.p_size_list}" var="vo">
+								<form:option value="${vo.s_size}" 
+										data-id="${vo.s_seq}">
+									${vo.o_name}
+								</form:option>
+							</c:forEach>	
 						</form:select>
 					</div>
 					

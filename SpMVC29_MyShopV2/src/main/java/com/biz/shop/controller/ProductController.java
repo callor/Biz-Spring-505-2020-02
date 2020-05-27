@@ -106,7 +106,7 @@ public class ProductController {
 	
 	@ResponseBody
 	@RequestMapping(value="/insert_size",method=RequestMethod.POST)
-	public String insert_size(ProSizeVO proSizeVO) {
+	public Object insert_size(ProSizeVO proSizeVO) {
 
 		log.debug("SIZE:" + proSizeVO.getS_size());
 		log.debug("P_CODE:"+ proSizeVO.getP_code());
@@ -117,14 +117,14 @@ public class ProductController {
 		}
 		
 		proOPTService.insert_size(proSizeVO);
-		return "OK";
+		return proSizeVO;
 	}
 	
 	@ResponseBody
 	@RequestMapping(value="/delete_size",method=RequestMethod.POST)
 	public String delete_size(ProSizeVO proSizeVO) {
 		
-		int ret =proOPTService.delete_size(proSizeVO);
+		int ret = proOPTService.delete_size(proSizeVO);
 		return "OK";
 		
 	}

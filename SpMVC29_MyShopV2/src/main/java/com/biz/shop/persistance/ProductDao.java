@@ -39,9 +39,11 @@ public interface ProductDao {
 			+ "WHERE p_code = #{p_code}")
 	public ProductVO findByPCode(String p_code);
 	
-	@Select("SELECT * FROM tbl_pro_size WHERE p_code = #{p_code}")
+	@Select("SELECT * FROM tbl_pro_size "
+			+ " LEFT JOIN tbl_options "
+			+ " ON s_size = o_standard AND o_division = 'SIZE' "
+			+ " WHERE p_code = #{p_code}")
 	public ProSizeVO getProSize(String p_code);
-	
 	
 	// mysql 중간문자열 검색하기
 	@Select("SELECT * FROM tbl_product "
