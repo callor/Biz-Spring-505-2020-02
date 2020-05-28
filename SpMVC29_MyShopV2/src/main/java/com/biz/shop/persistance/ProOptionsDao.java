@@ -34,11 +34,29 @@ public interface ProOptionsDao {
 	@Delete("DELETE FROM tbl_pro_size "
 			+ " WHERE s_seq = #{s_seq} ")
 	public int delete_size(ProSizeVO proSizeVO);
-		
+
+	@Options(useGeneratedKeys = true,keyProperty = "c_seq")
+	@Insert("INSERT INTO tbl_pro_color ( size_seq,c_color ) "
+			+ " VALUES (#{size_seq}, #{c_color} ) " )
 	public int insert_color(ProColorVO proColorVO);
+	
 	
 	@Select("SELECT count(*) FROM tbl_pro_size "
 			+ " WHERE p_code = #{p_code} AND s_size = #{s_size}")
 	public int getProSize(ProSizeVO proSizeVO);
+
+	@Select("SELECT count(*) FROM tbl_pro_color "
+			+ " WHERE size_seq = #{size_seq} "
+			+ " AND c_color = #{c_color}")
+	public int getProColor(ProColorVO proColorVO);
+
+	
+	@Select("SELECT * FROM tbl_pro_color "
+			+ " LEFT JOIN tbl_options "
+			+ "  		ON c_color = o_standard "
+			+ " WHERE size_seq = #{longSeq} "
+			+ " ORDER BY o_name ")
+	public List<ProColorVO> getColorListBySize(long longSeq);
+	
 	
 }

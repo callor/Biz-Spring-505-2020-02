@@ -16,7 +16,7 @@ import lombok.ToString;
 public class ProColorVO {
 	
 	private long c_seq;
-	private long size_s_seq;
+	private long size_seq;
 	private String c_color;
 	private String o_name;
 	private int c_qty;
