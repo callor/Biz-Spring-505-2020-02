@@ -14,11 +14,19 @@
 		</foreach>
 		)
 	</delete>
-	<update id="cart_to_delivery" parameterType="List">
+	<!-- 
+	Dao에서 List형 변수 1개만을 매개변수로 전달할 경우는
+	collection에 단순히 list라고만 명시하면 되지만
+	
+	Dao에서 2개 이상의 매개변수를 전달할 경우 
+	forEach 의 collection 에 
+			List형 변수의 이름을 반드시 명시해주어야 한다
+	-->
+	<update id="cart_to_delivery">
 		UPDATE tbl_cart
 			SET p_status = 'DELIV'
 			WHERE seq IN (
-			<foreach collection="list" item="seq" separator=", ">
+			<foreach collection="buyList" item="seq" separator=", ">
 				#{seq}
 			</foreach>
 			)

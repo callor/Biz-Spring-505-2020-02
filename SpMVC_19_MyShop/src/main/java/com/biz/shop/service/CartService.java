@@ -67,7 +67,7 @@ public class CartService {
 	}
 
 	public Integer cart_to_delivery(List<String> buyList) {
-		return cartDao.cart_to_delivery(buyList);
+		return cartDao.cart_to_delivery(buyList, (new CartVO()));
 	}
 
 }

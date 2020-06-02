@@ -38,7 +38,18 @@ public interface CartDao {
 			@Param("p_qty") int p_qty);
 
 	public int cart_list_delete(List<String> strSeqList);
-
-	public int cart_to_delivery(List<String> buyList);
+	
+	// Dao에서 mapper에 2개 이상의 변수를 전달할 경우는
+	// 반드시 @Param()을 설정해 주어야 한다.
+	public int cart_to_delivery(
+			@Param("buyList") List<String> buyList,
+			@Param("CartVO") CartVO cartVO);
 		
 }
+
+
+
+
+
+
+
