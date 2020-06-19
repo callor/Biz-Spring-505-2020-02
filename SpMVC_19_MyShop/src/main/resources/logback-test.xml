@@ -34,6 +34,13 @@
 				additivity="false">
 		<appender-ref ref="myOUT"/>	
 	</logger>
+	<logger name="com.biz.shop.dao" 
+				level="DEBUG"
+				additivity="false">
+		<appender-ref ref="myOUT"/>	
+	</logger>
+
+
 	<logger name="com.biz.shop.provider" 
 				level="TRACE"
 				additivity="false">

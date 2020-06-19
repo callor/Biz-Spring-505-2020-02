@@ -23,9 +23,11 @@
 	</bean>
 	
 	<tx:annotation-driven/>
+	<!-- 
 	<bean class="org.mybatis.spring.SqlSessionTemplate">
 		<constructor-arg index="0" ref="sessionFactory"/>
 	</bean>
+	 -->
 	
 	<mybatis-spring:scan base-package="com.biz.shop.dao"/>
 
